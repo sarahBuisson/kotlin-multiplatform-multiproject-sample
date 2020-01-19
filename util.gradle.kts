@@ -10,18 +10,14 @@ public open class NpmToMavenPlugin : Plugin<Project> {
 
             doLast {
                 println("run buildPackageJsonForMaven")
-
                 val packageJsonData = mutableMapOf(
                         "name" to project.name + "-js",
-
-
                         "version" to project.version,
                         "private" to true,
                         "dependencies" to mutableMapOf<String, Any?>(),
                         "scripts" to mutableMapOf<String, Any?>(
                                 "postinstall" to "install-jar-dependency package.json"
                         ),
-
                         "jarDependencies" to mutableMapOf<String, Any?>(),
                         "mavenDependencies" to mutableMapOf<String, Any?>(),
                         "workspaces" to mutableListOf<Any?>(),
@@ -46,34 +42,35 @@ public open class NpmToMavenPlugin : Plugin<Project> {
                         )
                     }
                 }
-                //commonMainImplementation
-                //org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
-                val plugin = project.plugins.find { it.javaClass.name.contains("KotlinMultiplatform") }
-                val kotlinVersionPlugin = plugin?.javaClass?.getMethod("getKotlinPluginVersion")?.invoke(plugin)
-                // val kotlinVersion =  project.configurations.get("jsMainImplementation").dependencies.find { it.name.contains("kotlin") }?.version
-                if (kotlinVersionPlugin == null) throw Exception("need   \"apply plugin: 'org.jetbrains.kotlin.multiplatform'\"")
+                val projectClass: Class<org.gradle.api.internal.artifacts.dependencies.DefaultProjectDependency> = org.gradle.api.internal.artifacts.dependencies.DefaultProjectDependency::class.java
+                project.configurations.get("commonMainImplementation").allDependencies.filterIsInstance(projectClass).forEach {
+
+                    (packageJsonData.get("mavenDependencies") as MutableMap<String, Any?>).put(
+                            it.name,
+                            "${it.group}:${it.name}:${it.version}"
+                    )
+
+                }
+                val kotlinPlugin = project.plugins.find { it.javaClass.name.contains("KotlinMultiplatform") }
+                val kotlinVersionPlugin = kotlinPlugin?.javaClass?.getMethod("getKotlinPluginVersion")?.invoke(kotlinPlugin)
+                if (kotlinVersionPlugin == null) {
+                    throw Exception("need   \"apply plugin: 'org.jetbrains.kotlin.multiplatform'\"")
+                }
                 (packageJsonData.get("dependencies") as MutableMap<String, Any>).put("kotlin", kotlinVersionPlugin)
 
                 project.plugins
                 val packageJson = project.file("${project.buildDir}/tmp/package.json")
-                println(packageJson.getParentFile())
                 if (!packageJson.getParentFile().exists())
                     packageJson.getParentFile().mkdirs()
                 packageJson.createNewFile()
-                println(packageJson)
                 packageJson.writeText(groovy.json.JsonBuilder(packageJsonData).toPrettyString())
-                println(packageJson.exists())
-                println(packageJson.absoluteFile)
-                println(packageJson.getParentFile().listFiles().get(0).absoluteFile)
             }
         }
 
 
 
         project.tasks.register("unpackJsNpm", Copy::class) {
-
             println("register unpackJsNpm in ${project.name}")
-
             val jarJsPath = "${project.buildDir}/libs/${project.name}-js-${project.version}.jar"
             this.from(project.zipTree(jarJsPath))
             this.into("${project.buildDir}/jsNpmToMaven")
