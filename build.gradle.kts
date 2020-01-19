@@ -21,6 +21,6 @@ subprojects {
     this.group = rootGroup;
     this.version = rootVersion;
     this.extra.set("kotlinVersion", kotlinVersion)
-    apply(from = "../util.gradle.kts")
+    apply(from = "${rootDir}/util.gradle.kts")
 
 }
