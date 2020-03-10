@@ -25,9 +25,9 @@ jobs:
           PASSWORD: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/upload-artifact@v1
         with:
-          name: maven
-          path: M4/build/libs/M4*.jar
-      - uses: actions/upload-artifact@v1
-        with:
           name: npm
           path: M4/build/npm/M4-js-0.0.1.jar
+      - uses: actions/upload-artifact@v1
+          with:
+            name: maven
+            path: M4/build/libs
