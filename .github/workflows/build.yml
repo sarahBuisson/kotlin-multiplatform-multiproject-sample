@@ -30,4 +30,4 @@ jobs:
       - uses: actions/upload-artifact@v1
         with:
           name: npm
-          path:M4/build/npm/M4-js-0.0.1.jar
+          path: M4/build/npm/M4-js-0.0.1.jar
