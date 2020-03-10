@@ -15,11 +15,12 @@ plugins {
     kotlin("multiplatform").version(kotlinVersion)
     id("maven-publish")
 }
+allprojects{
+    this.group = rootGroup
+    this.version = rootVersion
+}
 
 subprojects {
-
-    this.group = rootGroup;
-    this.version = rootVersion;
     this.extra.set("kotlinVersion", kotlinVersion)
     apply(from = "${rootDir}/util.gradle.kts")
 

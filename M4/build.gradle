@@ -8,11 +8,32 @@ apply plugin: 'org.jetbrains.kotlin.multiplatform'
 apply plugin: "maven-publish"
 
 kotlin {
-    jvm()
-    js {
-        browser {
+    jvm {
+        compilations.main.kotlinOptions {
+            // Setup the Kotlin compiler options for the "main" compilation:
+            jvmTarget = "1.8"
         }
+        mavenPublication {
+            artifactId project.name + "-jvm"
+        }
+//        preparePublishing(it,this)
 
+
+    }
+    js() {
+        browser{}
+        mavenPublication {
+            artifactId project.name + "-js"
+        }
+        compilations.main.kotlinOptions {
+            // Setup the Kotlin compiler options for the "main" compilation:
+            moduleKind = "umd"
+        }
+    }
+    metadata {
+        mavenPublication {
+            artifactId project.name + "-common"
+        }
     }
     // For ARM, should be changed to iosArm32 or iosArm64
     // For Linux, should be changed to e.g. linuxX64
