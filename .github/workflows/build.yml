@@ -16,7 +16,7 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
       - uses: actions/setup-java@v1
-          with:
+        with:
             java-version: 11
       - name: Publish to GitHub Packages
           run: gradle build packJsNpmToMaven publish
