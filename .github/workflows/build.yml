@@ -21,8 +21,9 @@ jobs:
       - name: Publish to GitHub Packages
         run: gradle build packJsNpmToMaven publish
         env:
-          USERNAME: ${{ github.actor }}
-          PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO_URL: ${{ github.repository }}
       - uses: actions/upload-artifact@v1
         with:
           name: npm
