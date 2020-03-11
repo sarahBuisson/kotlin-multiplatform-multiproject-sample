@@ -150,5 +150,3 @@ public open class NpmToMavenPlugin : Plugin<Project> {
      *
      * */
 }
-
-apply<NpmToMavenPlugin>()
