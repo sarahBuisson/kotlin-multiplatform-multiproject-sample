@@ -100,7 +100,8 @@ public open class NpmToMavenPlugin : Plugin<Project> {
         val publishingExtension = project.extensions["publishing"] as org.gradle.api.publish.internal.DefaultPublishingExtension
         if (System.getenv().containsKey("GITHUB_REPO_URL")) {
             publishingExtension.repositories.maven {
-                this.setUrl(System.getenv("GITHUB_REPO_URL"))
+                this.setUrl(uri("https://maven.pkg.github.com/" + System.getenv("GITHUB_REPO_URL")))
+                this.setName("GithubPackage")
                 this.credentials {
                     username = System.getenv("GITHUB_ACTOR")
                     password = System.getenv("GITHUB_TOKEN")
