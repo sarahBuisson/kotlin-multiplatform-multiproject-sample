@@ -19,7 +19,7 @@ jobs:
         with:
           java-version: 11
       - name: Publish to GitHub Packages
-        run: gradle build packJsNpmToMaven publish
+        run: gradle build packJsNpmToMaven publish --stacktrace
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
