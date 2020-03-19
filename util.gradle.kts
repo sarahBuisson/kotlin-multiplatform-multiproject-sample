@@ -115,7 +115,7 @@ public open class NpmToMavenPlugin : Plugin<Project> {
         if (System.getenv("GITHUB_REPO_URL") != null)
             publishingExtension.repositories {
                 maven {
-                    this.setUrl(System.getenv("GITHUB_REPO_URL"))
+                    this.setUrl("https://maven.pkg.github.com/" + System.getenv("GITHUB_REPO_URL"))
                     this.credentials {
                         username = System.getenv("GITHUB_ACTOR")
                         password = System.getenv("GITHUB_TOKEN")
