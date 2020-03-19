@@ -98,57 +98,31 @@ public open class NpmToMavenPlugin : Plugin<Project> {
         project.apply(plugin = ("maven-publish"))
 
         val publishingExtension = project.extensions["publishing"] as org.gradle.api.publish.internal.DefaultPublishingExtension
-        if (System.getenv().containsKey("GITHUB_REPO_URL")) {
-            publishingExtension.repositories.maven {
-                this.setUrl(uri("https://maven.pkg.github.com/" + System.getenv("GITHUB_REPO_URL")))
-                this.setName("GithubPackage")
-                this.credentials {
-                    username = System.getenv("GITHUB_ACTOR")
-                    password = System.getenv("GITHUB_TOKEN")
-                }
-
-            }
-        }
         publishingExtension.publications {
-            //gradle publishMavenNpmPublicationToMavenLocal
 
-            this.create<MavenPublication>("mavenNpm") {
+            System.getenv("GITHUB_REPO_URL")
+            register("mavenGithub", MavenPublication::class) {
+                // from(components["java"])
 
-                this.artifactId = project.name + "-npm"
-
-                this.artifact(project.file("${project.buildDir}/npm/${project.name}-js-${project.version}.jar"))
-                this.artifactId = project.name + "-npm"
+                //  println(project)
+                artifact(project.file("${project.buildDir}/libs/${project.name}-jvm-${project.version}.jar"))
+                groupId = project.group.toString()
+                artifactId = project.name
+                version = project.version.toString()
             }
+
         }
-        project.tasks.getByPath("publishMavenNpmPublicationToMavenLocal").dependsOn(packJsNpmToMaven)
-
-
+        if (System.getenv("GITHUB_REPO_URL") != null)
+            publishingExtension.repositories {
+                maven {
+                    this.setUrl(System.getenv("GITHUB_REPO_URL"))
+                    this.credentials {
+                        username = System.getenv("GITHUB_ACTOR")
+                        password = System.getenv("GITHUB_TOKEN")
+                    }
+                }
+            }
     }
-
-
-
-    /**
-     *
-    apply(plugin = "maven-publish")
-    configure {
-    repositories {
-    maven {
-    name = "GitHubPackages"
-    url = uri("https://maven.pkg.github.com/OWNER/REPOSITORY")
-    credentials {
-    username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
-    password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
-    }
-    }
-    }
-    publications {
-    register("gpr") {
-    from(components["java"])
-    }
-    }
-    }
-     *
-     * */
 }
 
-apply<NpmToMavenPlugin>()
+project.apply<NpmToMavenPlugin>()
