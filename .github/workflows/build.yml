@@ -1,4 +1,4 @@
-name: CI
+name: Build
 
 on: [push]
 
@@ -18,17 +18,13 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: 11
+      - uses: actions/upload-artifact@v1
+        with:
+          name: npm
+          path: M4/build/npm/M4-js-0.0.1.jar
       - name: Publish to GitHub Packages
         run: gradle build packJsNpmToMaven publish --stacktrace
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPO_URL: ${{ github.repository }}
-      - uses: actions/upload-artifact@v1
-        with:
-          name: npm
-          path: M4/build/npm/M4-js-0.0.1.jar
-      - uses: actions/upload-artifact@v1
-        with:
-          name: maven
-          path: M4/build/libs

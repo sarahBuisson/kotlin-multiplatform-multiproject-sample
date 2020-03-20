@@ -97,7 +97,7 @@ public open class NpmToMavenPlugin : Plugin<Project> {
 
         project.apply(plugin = ("maven-publish"))
 
-        val publishingExtension = project.extensions["publishing"] as org.gradle.api.publish.internal.DefaultPublishingExtension
+        val publishingExtension = project.extensions["publishing"] as org.gradle.api.publish.internal.DefaultPublishingExtension;
         /* publishingExtension.publications {
 
             System.getenv("GITHUB_REPO_URL")
@@ -108,11 +108,11 @@ public open class NpmToMavenPlugin : Plugin<Project> {
                 //  println(project)
                 artifact(project.file("${project.buildDir}/libs/${project.name}-jvm-${project.version}.jar"))
                 groupId = project.group.toString()
-               /*  artifactId = project.name
+                 artifactId = project.name
                 version = project.version.toString()
             }
 
-        }*/
+        } */
         if (System.getenv("GITHUB_REPO_URL") != null)
             publishingExtension.repositories {
                 maven {
