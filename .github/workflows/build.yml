@@ -18,12 +18,14 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: 11
+      - name: Build
+        run: gradle build packJsNpmToMaven
       - uses: actions/upload-artifact@v1
         with:
           name: npm
           path: M4/build/npm/M4-js-0.0.1.jar
       - name: Publish to GitHub Packages
-        run: gradle build packJsNpmToMaven publish --stacktrace
+        run: gradle publish --stacktrace
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
