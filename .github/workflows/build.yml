@@ -19,11 +19,47 @@ jobs:
         with:
           java-version: 11
       - name: Build
-        run: gradle build packJsNpmToMaven
+        run: gradle build packJsNpmToMaven jacocoTestReport
       - uses: actions/upload-artifact@v1
         with:
           name: npm
           path: M4/build/npm/M4-js-0.0.1.jar
+      - name: Build reportDir
+        run: |
+          mkdir reports
+          cat > reports/index.html <<EOL
+          <!doctype html>
+          <html>
+          <head>
+           <title>GitHub reports deployed!</title>
+          </head>
+          <body>
+           <p>GitHub Pages with <strong>${{ github.sha }}</strong> commit ID has been deployed through <a href="https://github.com/marketplace/actions/github-pages">GitHub Pages action</a> successfully.</p>
+          </body>
+          </html>
+          EOL
+      - name: move into reports
+        run: |
+          cp -b M3/build/reports reports/${{github.ref}}/reports/M3/jacoco;
+          cp -b M4/build/reports reports/${{github.ref}}/reports/M4/jacoco;
+          cp -b M3/build/npm/M3-js-0.0.1.jar reports/${{github.ref}}/artifacts/M3-js-LATEST.jar;
+          cp -b M3/build/npm/M3-jvm-0.0.1.jar reports/${{github.ref}}/artifacts/M3-jvm-LATEST.jar;
+          cp -b M4/build/npm/M4-js-0.0.1.jar reports/${{github.ref}}/artifacts/M4-js-LATEST.jar;
+          cp -b M4/build/npm/M4-jvm-0.0.1.jar reports/${{github.ref}}/artifacts/M4-jvm-LATEST.jar;
+
+
+      - name: Deploy
+            if: success()
+            uses: crazy-max/ghaction-github-pages@v1
+            with:
+              target_branch: gh-reports
+              build_dir: reports
+            env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+
+
       - name: Publish to GitHub Packages
         run: gradle publish --stacktrace
         env:
