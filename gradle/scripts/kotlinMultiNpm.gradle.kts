@@ -87,7 +87,7 @@ public open class NpmToMavenPlugin : Plugin<Project> {
         val packJsNpmToMaven by project.tasks.registering(Zip::class) {
             println("register packJsNpmToMaven")
             this.from("${project.buildDir}/jsNpmToMaven")
-            this.archiveFileName.set("${project.name}-js-${project.version}.jar")
+            this.archiveFileName.set("${project.name}-npm-${project.version}.jar")
             this.destinationDirectory.set(project.file("${project.buildDir}/npm"))
             this.dependsOn("unpackJsNpm")
             this.dependsOn(movePackageJson)
@@ -98,33 +98,18 @@ public open class NpmToMavenPlugin : Plugin<Project> {
         project.apply(plugin = ("maven-publish"))
 
         val publishingExtension = project.extensions["publishing"] as org.gradle.api.publish.internal.DefaultPublishingExtension;
-        /* publishingExtension.publications {
+         publishingExtension.publications {
 
             System.getenv("GITHUB_REPO_URL")
            register("mavenGithub", MavenPublication::class) {
-                // from(components["java"])
-
-
-                //  println(project)
-                artifact(project.file("${project.buildDir}/libs/${project.name}-jvm-${project.version}.jar"))
+                artifact(project.file("${project.buildDir}/npm/${project.name}-npm-${project.version}.jar"))
                 groupId = project.group.toString()
-                 artifactId = project.name
+                artifactId = project.name
                 version = project.version.toString()
             }
 
-        } */
-        if (System.getenv("GITHUB_REPO_URL") != null)
-            publishingExtension.repositories {
-                maven {
+        }
 
-                    println("repo github")
-                    this.setUrl("https://maven.pkg.github.com/" + System.getenv("GITHUB_REPO_URL"))
-                    this.credentials {
-                        username = System.getenv("GITHUB_ACTOR")
-                        password = System.getenv("GITHUB_TOKEN")
-                    }
-                }
-            }
     }
 }
 

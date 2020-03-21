@@ -14,14 +14,19 @@ plugins {
     val kotlinVersion = "1.3.61"
     kotlin("multiplatform").version(kotlinVersion)
     id("maven-publish")
+    jacoco
+
 }
-allprojects{
+allprojects {
     this.group = rootGroup
     this.version = rootVersion
+
 }
 
 subprojects {
     this.extra.set("kotlinVersion", kotlinVersion)
-    apply(from = "${rootDir}/util.gradle.kts")
+    apply(from = "${rootDir}/gradle/scripts/kotlinMultiNpm.gradle.kts")
+    apply(from = "${rootDir}/gradle/scripts/github.gradle.kts")
+    apply(from = "${rootDir}/gradle/scripts/jacoco.gradle.kts")
 
 }
