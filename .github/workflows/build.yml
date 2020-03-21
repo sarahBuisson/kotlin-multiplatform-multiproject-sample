@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Run a one-line script
-        run: echo Hello, world! ${{github.base_ref}}.. ${{env.GITHUB_HEAD_REF}} .. ${{env.GITHUB_REF}} .. ${{ github.head_ref }}.a. ${ GITHUB_REF} z ${{GITHUB_REF}}
+        run: echo Hello, world! ${{github.base_ref}}.. ${{env.GITHUB_HEAD_REF}} .. ${{env.GITHUB_REF}} .. ${{ github.head_ref }}.a. ${ env.GITHUB_REF} z ${{env.GITHUB_REF}}
       - name: Run a multi-line script
         env:
           branchName: env.GITHUB_REF.split('/')[2]
