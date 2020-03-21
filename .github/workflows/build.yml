@@ -55,9 +55,11 @@ jobs:
         run: |
           mkdir ${{env.buildReportsDir}}/${{env.branchName}}
           mkdir ${{env.buildReportsDir}}/${{env.branchName}}/reports
+          mkdir ${{env.buildReportsDir}}/${{env.branchName}}/reports/M3/jacoco
+          mkdir ${{env.buildReportsDir}}/${{env.branchName}}/reports/M4/jacoco
           mkdir ${{env.buildReportsDir}}/${{env.branchName}}/artifacts
           cp -b -r M3/build/reports ${{env.buildReportsDir}}/${{env.branchName}}/reports/M3/jacoco;
-          cp -b -r M4/build/reports ${{env.buildReports}}/${{env.branchName}}/reports/M4/jacoco;
+          cp -b -r M4/build/reports ${{env.buildReportsDir}}/${{env.branchName}}/reports/M4/jacoco;
           cp -b -r M3/build/npm/M3-js-*.jar ${{env.buildReportsDir}}/${{env.branchName}}/artifacts/M3-js-LATEST.jar;
           cp -b -r M3/build/npm/M3-jvm-*.jar ${{env.buildReportsDir}}/${{env.branchName}}/artifacts/M3-jvm-LATEST.jar;
           cp -b -r M4/build/npm/M4-js-*.jar ${{env.buildReportsDir}}/${{env.branchName}}/artifacts/M4-js-LATEST.jar;
