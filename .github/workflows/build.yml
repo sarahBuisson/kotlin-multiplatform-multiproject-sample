@@ -55,7 +55,9 @@ jobs:
         run: |
           mkdir ${{env.buildReportsDir}}/${{env.branchName}}
           mkdir ${{env.buildReportsDir}}/${{env.branchName}}/reports
+          mkdir ${{env.buildReportsDir}}/${{env.branchName}}/reports/M3
           mkdir ${{env.buildReportsDir}}/${{env.branchName}}/reports/M3/jacoco
+          mkdir ${{env.buildReportsDir}}/${{env.branchName}}/reports/M4
           mkdir ${{env.buildReportsDir}}/${{env.branchName}}/reports/M4/jacoco
           mkdir ${{env.buildReportsDir}}/${{env.branchName}}/artifacts
           cp -b -r M3/build/reports ${{env.buildReportsDir}}/${{env.branchName}}/reports/M3/jacoco;
