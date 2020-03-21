@@ -13,7 +13,7 @@ jobs:
         run: echo Hello, world! ${{github.base_ref}} ${{env.GITHUB_HEAD_REF}} ${{env.GITHUB_REF}}
       - name: Run a multi-line script
         env:
-          branchName: ${{env.GITHUB_REF}}.split('/')[2]
+          branchName: ${{env.GITHUB_REF.split('/')[2]}}
         run: |
           echo Add other actions to build,${{github.base_ref}} ${{env.GITHUB_HEAD_REF}} ${{branchName}}
           echo test, and deploy your project.
