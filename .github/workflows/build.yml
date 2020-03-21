@@ -49,7 +49,7 @@ jobs:
           EOL
       - name: move into reports
         env:
-          buildReportsDir: buildReports
+          buildReportsDir: "buildReports"
           branchName: process.env.GITHUB_HEAD_REF || process.env.GITHUB_REF && process.env.GITHUB_REF.split('/')[2]
 
         run: |
