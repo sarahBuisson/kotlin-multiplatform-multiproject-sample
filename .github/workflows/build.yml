@@ -10,10 +10,12 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Run a one-line script
-        run: echo Hello, world!
+        run: echo Hello, world! ${{github.base_ref}} ${{env.GITHUB_HEAD_REF}} ${{env.GITHUB_REF}}
       - name: Run a multi-line script
+        env:
+          branchName: ${{env.GITHUB_REF}}.split('/')[2]
         run: |
-          echo Add other actions to build,${{github.base_ref}} ${{env.GITHUB_HEAD_REF}}
+          echo Add other actions to build,${{github.base_ref}} ${{env.GITHUB_HEAD_REF}} ${{branchName}}
           echo test, and deploy your project.
       - uses: actions/setup-java@v1
         with:
@@ -50,7 +52,7 @@ jobs:
       - name: move into reports
         env:
           buildReportsDir: "buildReports"
-          branchName: ${{env.GITHUB_REF.split('/')[2]}}
+          branchName: ${{env.GITHUB_REF}}.split('/')[2]
 
         run: |
           mkdir ${{env.buildReportsDir}}/${{env.branchName}}
