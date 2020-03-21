@@ -47,18 +47,14 @@ jobs:
           cp -b M4/build/npm/M4-js-0.0.1.jar reports/${{github.ref}}/artifacts/M4-js-LATEST.jar;
           cp -b M4/build/npm/M4-jvm-0.0.1.jar reports/${{github.ref}}/artifacts/M4-jvm-LATEST.jar;
 
-
       - name: Deploy
-            if: success()
-            uses: crazy-max/ghaction-github-pages@v1
-            with:
-              target_branch: gh-reports
-              build_dir: reports
-            env:
-              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
-
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v1
+        with:
+          target_branch: gh-reports
+          build_dir: reports
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to GitHub Packages
         run: gradle publish --stacktrace
