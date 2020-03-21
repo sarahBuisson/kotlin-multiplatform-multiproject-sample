@@ -10,12 +10,10 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Run a one-line script
-        run: echo Hello, world! ${{github.base_ref}}.. ${{env.GITHUB_HEAD_REF}} .. ${{env.GITHUB_REF}} .. ${{ github.head_ref }}.a. ${{env}} z ${{env.GITHUB_REF}}
+        run: echo Hello, world!
       - name: Run a multi-line script
-        env:
-          branchName: env.GITHUB_REF.split('/')[2]
         run: |
-          echo Add other actions to build,${{github.base_ref}} ${{env.GITHUB_HEAD_REF}} ${{env.branchName}}
+          echo Add other actions to build,
           echo test, and deploy your project.
       - uses: actions/setup-java@v1
         with:
@@ -24,8 +22,8 @@ jobs:
         run: gradle build packJsNpmToMaven jacocoTestReport
       - name: Build reportDir
         env:
-          buildReportsDir: buildReports
-          branchName: process.env.GITHUB_HEAD_REF || process.env.GITHUB_REF && process.env.GITHUB_REF.split('/')[2]
+          buildReportsDir: ${{"buildReports"}}
+          branchName: ${{"branch"}}
         run: |
           mkdir ${{env.buildReportsDir}}
           cat > ${{env.buildReportsDir}}/index.html <<EOL
