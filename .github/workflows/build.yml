@@ -50,7 +50,7 @@ jobs:
       - name: move into reports
         env:
           buildReportsDir: "buildReports"
-          branchName: env.GITHUB_REF.split('/')[2]
+          branchName: ${{env.GITHUB_REF.split('/')[2]}}
 
         run: |
           mkdir ${{env.buildReportsDir}}/${{env.branchName}}
