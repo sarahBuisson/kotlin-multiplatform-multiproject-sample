@@ -15,7 +15,7 @@ jobs:
         env:
           branchName: env.GITHUB_REF.split('/')[2]
         run: |
-          echo Add other actions to build,${{github.base_ref}} ${{env.GITHUB_HEAD_REF}} ${{branchName}}
+          echo Add other actions to build,${{github.base_ref}} ${{env.GITHUB_HEAD_REF}} ${{env.branchName}}
           echo test, and deploy your project.
       - uses: actions/setup-java@v1
         with:
