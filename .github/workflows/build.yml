@@ -22,7 +22,7 @@ jobs:
         run: gradle build packJsNpmToMaven jacocoTestReport
       - name: Build reportDir
         env:
-          buildReportsDir: ${{"buildReports"}}
+          buildReportsDir: "buildReports"
           branchName: ${{"branch"}}
         run: |
           mkdir ${{env.buildReportsDir}}
