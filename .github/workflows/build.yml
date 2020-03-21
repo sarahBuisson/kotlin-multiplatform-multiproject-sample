@@ -13,7 +13,7 @@ jobs:
         run: echo Hello, world!
       - name: Run a multi-line script
         run: |
-          echo Add other actions to build,${{github.base_ref}}
+          echo Add other actions to build,${{github.base_ref}} ${{env.GITHUB_HEAD_REF}}
           echo test, and deploy your project.
       - uses: actions/setup-java@v1
         with:
@@ -50,7 +50,7 @@ jobs:
       - name: move into reports
         env:
           buildReportsDir: "buildReports"
-          branchName: process.env.GITHUB_HEAD_REF || process.env.GITHUB_REF && process.env.GITHUB_REF.split('/')[2]
+          branchName: env.GITHUB_REF.split('/')[2]
 
         run: |
           mkdir ${{env.buildReportsDir}}/${{env.branchName}}
