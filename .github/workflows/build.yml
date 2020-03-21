@@ -23,7 +23,7 @@ jobs:
       - name: Build reportDir
         env:
           buildReportsDir: "buildReports"
-          branchName: ${{"branch"}}
+          branchName: "branch"
         run: |
           mkdir ${{env.buildReportsDir}}
           cat > ${{env.buildReportsDir}}/index.html <<EOL
@@ -50,7 +50,7 @@ jobs:
       - name: move into reports
         env:
           buildReportsDir: "buildReports"
-          branchName: ${{env.GITHUB_REF}}.split('/')[2]
+          branchName:  "branch"
 
         run: |
           mkdir ${{env.buildReportsDir}}/${{env.branchName}}
