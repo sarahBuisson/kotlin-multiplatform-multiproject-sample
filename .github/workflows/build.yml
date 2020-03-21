@@ -24,8 +24,8 @@ jobs:
         env:
           buildReportsDir: buildReports
         run: |
-          mkdir ${{env.buildReports}}
-          cat > ${{env.buildReports}}/index.html <<EOL
+          mkdir ${{env.buildReportsDir}}
+          cat > ${{env.buildReportsDir}}/index.html <<EOL
           <!doctype html>
           <html>
           <head>
@@ -33,20 +33,30 @@ jobs:
           </head>
           <body>
            <p>GitHub Pages with <strong>${{ github.sha }}</strong> commit ID has been deployed through <a href="https://github.com/marketplace/actions/github-pages">GitHub Pages action</a> successfully.</p>
+          <p>jacocoReports:
+
+          <a href="${{github.ref}}/reports/M3/jacoco">M3</a>
+          <a href="/${{github.ref}}/reports/M4/jacoco">M4</a>
+          </p>
+          <p>
+          artifacts:
+          <ul>
+          <li></li></ul>
+          </p>
           </body>
           </html>
           EOL
       - name: move into reports
         run: |
-          mkdir ${{env.buildReports}}/${{github.ref}}
-          mkdir ${{env.buildReports}}/${{github.ref}}/reports
-          mkdir ${{env.buildReports}}/${{github.ref}}/artifacts
-          cp -b M3/build/reports ${{env.buildReports}}/${{github.ref}}/reports/M3/jacoco;
+          mkdir ${{env.buildReportsDir}}/${{github.ref}}
+          mkdir ${{env.buildReportsDir}}/${{github.ref}}/reports
+          mkdir ${{env.buildReportsDir}}/${{github.ref}}/artifacts
+          cp -b M3/build/reports ${{env.buildReportsDir}}/${{github.ref}}/reports/M3/jacoco;
           cp -b M4/build/reports ${{env.buildReports}}/${{github.ref}}/reports/M4/jacoco;
-          cp -b M3/build/npm/M3-js-*.jar ${{env.buildReports}}/${{github.ref}}/artifacts/M3-js-LATEST.jar;
-          cp -b M3/build/npm/M3-jvm-*.jar ${{env.buildReports}}/${{github.ref}}/artifacts/M3-jvm-LATEST.jar;
-          cp -b M4/build/npm/M4-js-*.jar ${{env.buildReports}}/${{github.ref}}/artifacts/M4-js-LATEST.jar;
-          cp -b M4/build/npm/M4-jvm-*.jar ${{env.buildReports}}/${{github.ref}}/artifacts/M4-jvm-LATEST.jar;
+          cp -b M3/build/npm/M3-js-*.jar ${{env.buildReportsDir}}/${{github.ref}}/artifacts/M3-js-LATEST.jar;
+          cp -b M3/build/npm/M3-jvm-*.jar ${{env.buildReportsDir}}/${{github.ref}}/artifacts/M3-jvm-LATEST.jar;
+          cp -b M4/build/npm/M4-js-*.jar ${{env.buildReportsDir}}/${{github.ref}}/artifacts/M4-js-LATEST.jar;
+          cp -b M4/build/npm/M4-jvm-*.jar ${{env.buildReportsDir}}/${{github.ref}}/artifacts/M4-jvm-LATEST.jar;
 
       - name: Deploy
         if: success()
