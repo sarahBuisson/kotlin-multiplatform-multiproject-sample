@@ -79,11 +79,18 @@ jobs:
           build_dir: "buildReports"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v2-preview
         with:
-          name: npm
-          path: M4/build/npm/M4-npm-0.0.1.jar
-
+          name: npm-M3
+          path: M3/build/npm/M3-npm-*.jar
+      - uses: actions/upload-artifact@v2-preview
+        with:
+          name: npm-M4
+          path: M4/build/npm/M4-npm-*.jar
+      - uses: actions/upload-artifact@v2-preview
+        with:
+          name: reports-jacoco
+          path:  ./**/build/reports/
 
       - name: Publish to GitHub Packages
         run: gradle publish --stacktrace
