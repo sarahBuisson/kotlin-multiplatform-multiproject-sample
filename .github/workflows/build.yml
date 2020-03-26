@@ -20,6 +20,12 @@ jobs:
           java-version: 11
       - name: Build
         run: gradle build packJsNpmToMaven jacocoTestReport
+
+      - name: Publish snapshot
+        run: |
+           gem install package_cloud.
+           package_cloud push sarahBuisson/sarahbuisson M3/build/libs/M3-jvm-0.0.1.jar
+           package_cloud push sarahBuisson/sarahbuisson M4/build/libs/M4-jvm-*.jar
       - name: Build reportDir
         env:
           buildReportsDir: "buildReports"
