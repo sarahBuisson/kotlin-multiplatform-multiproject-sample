@@ -13,10 +13,8 @@ jobs:
         run: echo Hello, world!
       - name: install packageCloud
         run: |
-          mkdir package_cloud
-          gem install package_cloud --install-dir ./package_cloud
-          ls
-          ./package_cloud/package_cloud push "some" sarahBuisson/sarahbuisson
+          gem install --no-ri --no-rdoc package_cloud
+          package_cloud push "some" sarahBuisson/sarahbuisson
       - name: Run a multi-line script
         run: |
           echo Add other actions to build,
@@ -28,12 +26,13 @@ jobs:
         run: gradle build packJsNpmToMaven jacocoTestReport
       - name: Publish snapshot
         run: |
+          curl https://fea9d508e3eed8aa9b67ba7e8f088891d5693d898930b255:@packagecloud.io/api/v1/distributions.json
           curl -s https://packagecloud.io/install/repositories/sarahBuisson/sarahbuisson/script.deb.sh | sudo bash
-          curl -g -F "package[distro_version_id]=0.0.1" -f "package[package_file]=M3/build/libs/M3-jvm-0.0.1.jar" https://fea9d508e3eed8aa9b67ba7e8f088891d5693d898930b255:@packagecloud.io/api/v1/repos/sarahBuisson/sarahbuisson/packages.json
+          curl -X POST -g -F "package[distro_version_id]=0.0.1" -F "package[package_file]=M3/build/libs/M3-jvm-0.0.1.jar" https://fea9d508e3eed8aa9b67ba7e8f088891d5693d898930b255:@packagecloud.io/api/v1/repos/sarahBuisson/sarahbuisson/packages.json
       - name: Publish snapshot2
         run: |
-          curl -g https://${{secrets.REPO_PACKAGE_KEY}}:@packagecloud.io/api/v1/repos/sarahBuisson/sarahbuisson/packages.json -f 'package[package_file]=M3/build/libs/M3-jvm-0.0.1.jar'
-          curl -g https://${{secrets.REPO_PACKAGE_KEY}}:@packagecloud.io/api/v1/repos/sarahBuisson/sarahbuisson/packages.json -f 'package[package_file]=M4/build/libs/M4-jvm-*.jar'
+          curl -g https://packagecloud.io/api/v1/repos/sarahBuisson/sarahbuisson/packages.json -F 'package[package_file]=M3/build/libs/M3-jvm-0.0.1.jar'
+          curl -g https://packagecloud.io/api/v1/repos/sarahBuisson/sarahbuisson/packages.json -f 'package[package_file]=M4/build/libs/M4-jvm-*.jar'
       - name: Build reportDir
         env:
           buildReportsDir: "buildReports"
