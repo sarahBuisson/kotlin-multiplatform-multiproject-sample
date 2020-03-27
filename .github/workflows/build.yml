@@ -13,6 +13,9 @@ jobs:
         run: echo Hello, world!
       - name: install packageCloud
         run: |
+          apt-get update
+          apt-get install -y git ssh ruby-dev rubygems python-all dh-python python3-stdeb docker.io python3 python3-pyqt5 python3-appdirs python3-click python3-xdg
+          gem install --no-ri --no-rdoc rake
           gem install --no-ri --no-rdoc package_cloud
           package_cloud push "some" sarahBuisson/sarahbuisson
       - name: Run a multi-line script
