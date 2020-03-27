@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: Run a one-line script
         run: echo Hello, world!
-       - name: install packageCloud
+      - name: install packageCloud
          run: |
           curl -s https://packagecloud.io/install/repositories/sarahBuisson/sarahbuisson/script.deb.sh | sudo bash
           package_cloud push "some" sarahBuisson/sarahbuisson
