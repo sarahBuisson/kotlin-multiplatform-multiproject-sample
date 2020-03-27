@@ -3,9 +3,9 @@ name: Build
 on: [push]
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
+  build-ubuntu-disco:
+    docker:
+      - image: ubuntu:19.04
 
     steps:
       - uses: actions/checkout@v1
