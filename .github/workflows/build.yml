@@ -19,7 +19,6 @@ jobs:
           gem install package_cloud
           cat > /home/runner/.packagecloud <<EOL
           {"url":"https://packagecloud.io","token":"${{secrets.REPO_PACKAGE_KEY}}"}
-                   EOL
       - name: Run a multi-line script
         run: |
           cat /home/runner/.packagecloud
