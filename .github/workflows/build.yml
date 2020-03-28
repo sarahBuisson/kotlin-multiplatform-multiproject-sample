@@ -31,6 +31,7 @@ jobs:
         run: gradle build packJsNpmToMaven jacocoTestReport
       - name: Publish snapshot
         run: |
+          package_cloud yank sarahBuisson/sarahbuisson/java somewhere/M3-SNAPSHOT.jar
          {
           echo 0
           echo 0
