@@ -19,7 +19,7 @@ jobs:
           apt install zsh
           gem install package_cloud
           cat > /home/runner/.packagecloud <<EOL
-                 {"token":"${{secrets.REPO_PACKAGE_KEY}}"}
+          {"url":"https://packagecloud.io","token":"${{secrets.REPO_PACKAGE_KEY}}"}
                    EOL
       - name: Run a multi-line script
         run: |
@@ -32,10 +32,8 @@ jobs:
         run: gradle build packJsNpmToMaven jacocoTestReport
       - name: Publish snapshot
         run: |
-          echo $0
-          zsh
-          spawn "package_cloud push sarahBuisson/sarahbuisson M3/build/libs/M3-jvm-0.0.1.jar"
-          expect "*" { send ${{secrets.REPO_PACKAGE_KEY}} }
+         echo "0 0 y" | package_cloud push sarahBuisson/sarahbuisson M3/build/libs/M3-jvm-0.0.1.jar
+
       - name: Build reportDir
         env:
           buildReportsDir: "buildReports"
