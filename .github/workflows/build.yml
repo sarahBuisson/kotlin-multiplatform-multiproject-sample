@@ -88,7 +88,7 @@ jobs:
           cp -b -r M4/build/npm/M4-npm-*.jar ${{env.buildReportsDir}}/${{env.branchName}}/artifacts/M4-npm-LATEST.jar;
           cp -b -r M4/build/libs/M4-jvm-*.jar ${{env.buildReportsDir}}/${{env.branchName}}/artifacts/M4-jvm-LATEST.jar;
 
-      - name: Deploy
+      - name: publish test coverage
         if: success()
         uses: crazy-max/ghaction-github-pages@v1
         with:
@@ -130,7 +130,7 @@ jobs:
            echo 0
            echo 0
            echo y
-           }  | package_cloud push sarahBuisson/sarahbuisson M3-jvm*.jar --coordinates=somewhere:M3-jvm:SNAPSHOT
+           }  | package_cloud push sarahBuisson/sarahbuisson M3/build/libs/M3-jvm*.jar --coordinates=somewhere:M3-jvm:SNAPSHOT
   publish_github:
     needs: build
     runs-on: ubuntu-latest
