@@ -33,11 +33,11 @@ jobs:
           package_cloud yank sarahBuisson/sarahbuisson/java somewhere/M3-jvm-SNAPSHOT.jar
       - name: Publish snapshot
         run: |
-         {
-          echo 0
-          echo 0
-          echo y
-          }  | package_cloud push sarahBuisson/sarahbuisson M3/build/libs/M3-jvm-*.jar --coordinates=somewhere:M3-jvm:SNAPSHOT
+          {
+           echo 0
+           echo 0
+           echo y
+           }  | package_cloud push sarahBuisson/sarahbuisson M3/build/libs/M3-jvm-*.jar --coordinates=somewhere:M3-jvm:SNAPSHOT
 
       - name: Build reportDir
         env:
@@ -128,8 +128,8 @@ jobs:
       - name: Build
         run: gradle build packJsNpmToMaven
       - name: Publish to GitHub Packages
-          run: gradle publish --stacktrace
-          env:
-            GITHUB_ACTOR: ${{ github.actor }}
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            GITHUB_REPO_URL: ${{ github.repository }}
+        run: gradle publish --stacktrace
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO_URL: ${{ github.repository }}
