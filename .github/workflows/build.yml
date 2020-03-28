@@ -29,9 +29,11 @@ jobs:
           java-version: 11
       - name: Build
         run: gradle build packJsNpmToMaven jacocoTestReport
-      - name: Publish snapshot
+      - name: remove previous snapshot
         run: |
           package_cloud yank sarahBuisson/sarahbuisson/java somewhere/M3-SNAPSHOT.jar
+      - name: Publish snapshot
+        run: |
          {
           echo 0
           echo 0
