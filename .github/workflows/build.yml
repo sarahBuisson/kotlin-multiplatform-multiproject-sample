@@ -32,6 +32,7 @@ jobs:
       - name: Publish snapshot
         run: |
           echo $0
+          zsh
           spawn "package_cloud push sarahBuisson/sarahbuisson M3/build/libs/M3-jvm-0.0.1.jar"
           expect "*" { send ${{secrets.REPO_PACKAGE_KEY}} }
       - name: Build reportDir
