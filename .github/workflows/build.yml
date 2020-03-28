@@ -32,7 +32,11 @@ jobs:
         run: gradle build packJsNpmToMaven jacocoTestReport
       - name: Publish snapshot
         run: |
-         echo "0 0 y" | package_cloud push sarahBuisson/sarahbuisson M3/build/libs/M3-jvm-0.0.1.jar
+         {
+          echo 0
+          echo 0
+          echo y
+          }  | package_cloud push sarahBuisson/sarahbuisson M3/build/libs/M3-jvm-0.0.1.jar --coordinates=somewhere:M3-jvm:SNAPSHOT
 
       - name: Build reportDir
         env:
