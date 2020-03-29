@@ -89,7 +89,7 @@ jobs:
             echo "::set-env name=BUILD_ARTIFACT_ID::$(mvn help:evaluate -Dexpression=project.artifactId -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)"
             mvn help:evaluate -Dexpression=project.version -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout
             echo 'define env ${{env.BUILD_VERSION}}'
-            echo 'define env $BUILD_VERSION'
+            echo $BUILD_VERSION
       - if: contains(env.BUILD_VERSION, 'SNAPSHOT')
         name: Publish to GitHub Packages private
         env:
