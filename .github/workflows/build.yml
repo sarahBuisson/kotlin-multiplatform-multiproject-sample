@@ -123,11 +123,11 @@ jobs:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPO_URL: ${{ github.repository }}
-          run: gradle publish --stacktrace
+        run: gradle publish --stacktrace
       - if: false == contains(['SNAPSHOT'],env.BUILD_VERSION)
         name: Publish to GitHub Packages
-          env:
-            GITHUB_ACTOR: ${{ github.actor }}
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            GITHUB_REPO_URL: 'sarahBuisson/private_repo_snapshot'
-          run: gradle publish --stacktrace
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO_URL: 'sarahBuisson/private_repo_snapshot'
+        run: gradle publish --stacktrace
