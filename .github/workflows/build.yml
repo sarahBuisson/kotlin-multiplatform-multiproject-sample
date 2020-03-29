@@ -119,10 +119,10 @@ jobs:
           BUILD_ARTIFACT_ID: $(mvn help:evaluate -Dexpression=project.artifactId -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)
       - if: contains(['SNAPSHOT'],env.BUILD_VERSION)
         name: Publish to GitHub Packages
-          env:
-            GITHUB_ACTOR: ${{ github.actor }}
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            GITHUB_REPO_URL: ${{ github.repository }}
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO_URL: ${{ github.repository }}
           run: gradle publish --stacktrace
       - if: false == contains(['SNAPSHOT'],env.BUILD_VERSION)
         name: Publish to GitHub Packages
