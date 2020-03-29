@@ -11,7 +11,7 @@ jobs:
         with:
           java-version: 11
       - name: Build
-        run: gradle build packJsNpmToMaven jacocoTestReport
+        run: gradle build packJsNpmToMaven jacocoTestReport generatePomFileForKotlinMultiplatformPublication
 
       - uses: actions/upload-artifact@v2-preview
         with:
@@ -108,42 +108,26 @@ jobs:
         with:
           name: reports-jacoco
           path:  ./**/build/reports/
-  publish_snapshot:
-    needs: build
-    runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/setup-ruby@v1
-        with:
-          ruby-version: '2.5'
-      - name: Install package-cloud
-        run: |
-          gem install package_cloud
-          cat > /home/runner/.packagecloud <<EOL
-          {"url":"https://packagecloud.io","token":"${{secrets.REPO_PACKAGE_KEY}}"}
-      - name: remove previous snapshot
-        run: |
-          package_cloud yank sarahBuisson/sarahbuisson/java somewhere/M3-jvm-SNAPSHOT.jar
-      - name: Publish snapshot
-        run: |
-          {
-           echo 0
-           echo 0
-           echo y
-           }  | package_cloud push sarahBuisson/sarahbuisson M3/build/libs/M3-jvm*.jar --coordinates=somewhere:M3-jvm:SNAPSHOT
-  publish_github:
+  publish:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Build
-        run: gradle build packJsNpmToMaven
-      - name: Publish to GitHub Packages
-        run: gradle publish --stacktrace
+      - name:
         env:
-          GITHUB_ACTOR: ${{ github.actor }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPO_URL: ${{ github.repository }}
+          BUILD_VERSION: $(mvn help:evaluate -Dexpression=project.version -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)
+          BUILD_ARTIFACT_ID: $(mvn help:evaluate -Dexpression=project.artifactId -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)
+      - if: contains(['SNAPSHOT'],env.BUILD_VERSION)
+        name: Publish to GitHub Packages
+          env:
+            GITHUB_ACTOR: ${{ github.actor }}
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            GITHUB_REPO_URL: ${{ github.repository }}
+          run: gradle publish --stacktrace
+      - if: false == contains(['SNAPSHOT'],env.BUILD_VERSION)
+        name: Publish to GitHub Packages
+          env:
+            GITHUB_ACTOR: ${{ github.actor }}
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            GITHUB_REPO_URL: 'sarahBuisson/private_repo_snapshot'
+          run: gradle publish --stacktrace

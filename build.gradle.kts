@@ -7,7 +7,7 @@ repositories {
 }
 val kotlinVersion = "1.3.61"
 val rootGroup = "com.example.my.library"
-val rootVersion = "0.0.2"
+val rootVersion = "0.0.2-SNAPSHOT"
 
 
 plugins {
@@ -26,7 +26,7 @@ allprojects {
 subprojects {
     this.extra.set("kotlinVersion", kotlinVersion)
     apply(from = "${rootDir}/gradle/scripts/kotlinMultiNpm.gradle.kts")
-    apply(from = "${rootDir}/gradle/scripts/github.gradle.kts")
     apply(from = "${rootDir}/gradle/scripts/jacoco.gradle.kts")
+    apply(from = "${rootDir}/gradle/scripts/github.gradle.kts")
 
 }
