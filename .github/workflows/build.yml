@@ -74,36 +74,29 @@ jobs:
         with:
           name: npm-M4
           path: M4/build/npm/M4-npm-*.jar
+
       - uses: actions/upload-artifact@v2-preview
         with:
           name: reports-jacoco
           path:  ./**/build/reports/
+
       - name: extract build version
         run: |
             gradle generatePomFileForKotlinMultiplatformPublication
             echo "::set-env name=BUILD_VERSION::echo $(mvn help:evaluate -Dexpression=project.version -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)"
             echo "::set-env name=BUILD_ARTIFACT_ID::echo $(mvn help:evaluate -Dexpression=project.artifactId -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)"
-            mvn help:evaluate -Dexpression=project.version -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout
-            echo 'define env ${{env.BUILD_VERSION}} ${{github.repository}}'
-            echo $BUILD_VERSION
 
-      - name: ddd
-        run: |
-          echo 'define env ${{env.BUILD_VERSION}}'
-          echo $BUILD_VERSION
       - if: contains(env.BUILD_VERSION, 'SNAPSHOT')
         name: Publish to GitHub Packages private
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPO_URL: 'sarahBuisson/private_repo_snapshot'
-        run: |
-          echo "::set-env name=BUILD_VERSION::$(mvn help:evaluate -Dexpression=project.version -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)"
-          gradle build packJsNpmToMaven publish
+        run: gradle build packJsNpmToMaven publish
       - if: false == contains(env.BUILD_VERSION, 'SNAPSHOT')
         name: Publish to GitHub Packages
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPO_URL: ${{ github.repository }}
-        run: gradle publish
+        run: gradle  build packJsNpmToMaven publish
