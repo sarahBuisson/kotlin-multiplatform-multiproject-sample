@@ -2,8 +2,6 @@
 repositories {
     mavenCentral()
 }
-group = "com.example.my.library"
-version = "0.0.1"
 apply plugin: 'org.jetbrains.kotlin.multiplatform'
 apply plugin: "maven-publish"
 

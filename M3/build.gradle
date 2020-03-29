@@ -2,8 +2,6 @@
 repositories {
     mavenCentral()
 }
-group 'com.example'
-version '0.0.1'
 
 apply plugin: 'maven-publish'
 this.publishing
@@ -12,8 +10,6 @@ this.publishing
 repositories {
     mavenCentral()
 }
-group = "com.example.my.library"
-version = "0.0.1"
 
 apply plugin: 'org.jetbrains.kotlin.multiplatform'
 apply plugin: "maven-publish"
