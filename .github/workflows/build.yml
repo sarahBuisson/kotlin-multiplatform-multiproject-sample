@@ -11,7 +11,7 @@ jobs:
         with:
           java-version: 11
       - name: Build
-        run: gradle build packJsNpmToMaven jacocoTestReport generatePomFileForKotlinMultiplatformPublication
+        run: gradle build packJsNpmToMaven
       - uses: actions/setup-ruby@v1
         with:
           ruby-version: '2.5'
@@ -20,6 +20,7 @@ jobs:
           buildReportsDir: "buildReports"
           branchName: "branch"
         run: |
+          gradle jacocoTestReport
           mkdir ${{env.buildReportsDir}}
           cat > ${{env.buildReportsDir}}/index.html <<EOL
           <!doctype html>
@@ -50,21 +51,12 @@ jobs:
         run: |
           mkdir ${{env.buildReportsDir}}/${{env.branchName}}
           mkdir ${{env.buildReportsDir}}/${{env.branchName}}/reports
-          mkdir ${{env.buildReportsDir}}/${{env.branchName}}/reports/M3
-          mkdir ${{env.buildReportsDir}}/${{env.branchName}}/reports/M3/jacoco
-          mkdir ${{env.buildReportsDir}}/${{env.branchName}}/reports/M4
-          mkdir ${{env.buildReportsDir}}/${{env.branchName}}/reports/M4/jacoco
-          mkdir ${{env.buildReportsDir}}/${{env.branchName}}/artifacts
           ls
           ls M3
           ls M3/build
           ls M3/build/npm
           cp -b -r M3/build/reports ${{env.buildReportsDir}}/${{env.branchName}}/reports/M3/jacoco;
           cp -b -r M4/build/reports ${{env.buildReportsDir}}/${{env.branchName}}/reports/M4/jacoco;
-          cp -b -r M3/build/npm/M3-npm-*.jar ${{env.buildReportsDir}}/${{env.branchName}}/artifacts/M3-npm-LATEST.jar;
-          cp -b -r M3/build/libs/M3-jvm-*.jar ${{env.buildReportsDir}}/${{env.branchName}}/artifacts/M3-jvm-LATEST.jar;
-          cp -b -r M4/build/npm/M4-npm-*.jar ${{env.buildReportsDir}}/${{env.branchName}}/artifacts/M4-npm-LATEST.jar;
-          cp -b -r M4/build/libs/M4-jvm-*.jar ${{env.buildReportsDir}}/${{env.branchName}}/artifacts/M4-jvm-LATEST.jar;
 
       - name: publish test coverage
         if: success()
@@ -88,8 +80,9 @@ jobs:
           path:  ./**/build/reports/
       - name:
           run: |
-        :set-env name=BUILD_VERSION::$(mvn help:evaluate -Dexpression=project.version -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)
-        :set-env name=BUILD_ARTIFACT_ID::$(mvn help:evaluate -Dexpression=project.artifactId -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)
+            gradle generatePomFileForKotlinMultiplatformPublication
+            echo ::set-env name=BUILD_VERSION::$(mvn help:evaluate -Dexpression=project.version -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)
+            echo ::set-env name=BUILD_ARTIFACT_ID::$(mvn help:evaluate -Dexpression=project.artifactId -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)
         echo 'define env ${{env.BUILD_VERSION}}'
       - if: contains(env.BUILD_VERSION, 'SNAPSHOT')
         name: Publish to GitHub Packages private
