@@ -97,7 +97,7 @@ jobs:
             echo "::set-env name=BUILD_VERSION::echo $(mvn help:evaluate -Dexpression=project.version -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)"
             echo "::set-env name=BUILD_ARTIFACT_ID::echo $(mvn help:evaluate -Dexpression=project.artifactId -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)"
             mvn help:evaluate -Dexpression=project.version -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout
-            echo 'define env ${{env.BUILD_VERSION}}'
+            echo 'define env ${{env.BUILD_VERSION}} ${{github.repository}}'
             echo $BUILD_VERSION
 
       - name: ddd
