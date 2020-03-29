@@ -87,10 +87,10 @@ jobs:
           name: reports-jacoco
           path:  ./**/build/reports/
       - name:
-        env:
-          BUILD_VERSION: $(mvn help:evaluate -Dexpression=project.version -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)
-          BUILD_ARTIFACT_ID: $(mvn help:evaluate -Dexpression=project.artifactId -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)
-        run: echo 'define env ${{env.BUILD_VERSION}}'
+          run: |
+        :set-env name=BUILD_VERSION::$(mvn help:evaluate -Dexpression=project.version -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)
+        :set-env name=BUILD_ARTIFACT_ID::$(mvn help:evaluate -Dexpression=project.artifactId -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)
+        echo 'define env ${{env.BUILD_VERSION}}'
       - if: contains(env.BUILD_VERSION, 'SNAPSHOT')
         name: Publish to GitHub Packages private
         env:
