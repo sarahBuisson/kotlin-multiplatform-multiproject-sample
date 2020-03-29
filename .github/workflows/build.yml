@@ -78,8 +78,8 @@ jobs:
         with:
           name: reports-jacoco
           path:  ./**/build/reports/
-      - name:
-          run: |
+      - name: extract build version
+        run: |
             gradle generatePomFileForKotlinMultiplatformPublication
             echo ::set-env name=BUILD_VERSION::$(mvn help:evaluate -Dexpression=project.version -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)
             echo ::set-env name=BUILD_ARTIFACT_ID::$(mvn help:evaluate -Dexpression=project.artifactId -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)
