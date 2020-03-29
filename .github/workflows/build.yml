@@ -10,19 +10,6 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: 11
-      - if: contains('SNAPSHOTsssss', 'SNAPSHOT')
-        run: echo "SNAPAPPA"
-      - if: contains('S', 'SNAPSHOT')
-        run: echo "ssss"
-
-
-      - name: Set QA Environment
-        run: echo "::set-env name=ENVIRONMENT::$(echo qa)"
-
-      - name: Set QA Environment2
-        run: echo "${{env.ENVIRONMENT}}"
-      - name: Set QA Environment3
-        run: echo $ENVIRONMENT
       - name: Build
         run: gradle build packJsNpmToMaven
       - uses: actions/setup-ruby@v1
@@ -112,7 +99,7 @@ jobs:
           GITHUB_REPO_URL: 'sarahBuisson/private_repo_snapshot'
         run: |
           echo "::set-env name=BUILD_VERSION::$(mvn help:evaluate -Dexpression=project.version -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)"
-          gradle publish
+          gradle build packJsNpmToMaven publish
       - if: false == contains(env.BUILD_VERSION, 'SNAPSHOT')
         name: Publish to GitHub Packages
         env:
