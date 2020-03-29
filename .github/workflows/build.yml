@@ -53,8 +53,8 @@ jobs:
           branchName:  "branch"
 
         run: |
-          mkdir ${{env.buildReportsDir}}/${{env.branchName}}
-          mkdir ${{env.buildReportsDir}}/${{env.branchName}}/reports
+          mkdir -p ${{env.buildReportsDir}}/${{env.branchName}}/reports/M3
+          mkdir -p ${{env.buildReportsDir}}/${{env.branchName}}/reports/M4
           ls
           ls M3
           ls M3/build
