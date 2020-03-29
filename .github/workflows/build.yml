@@ -118,14 +118,14 @@ jobs:
           BUILD_VERSION: $(mvn help:evaluate -Dexpression=project.version -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)
           BUILD_ARTIFACT_ID: $(mvn help:evaluate -Dexpression=project.artifactId -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)
         run: echo 'define env'
-      - if: contains(['SNAPSHOT'],env.BUILD_VERSION)
+      - if: contains(env.BUILD_VERSION, 'SNAPSHOT')
         name: Publish to GitHub Packages
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPO_URL: ${{ github.repository }}
         run: gradle publish --stacktrace
-      - if: false == contains(['SNAPSHOT'],env.BUILD_VERSION)
+      - if: false == contains(env.BUILD_VERSION, 'SNAPSHOT')
         name: Publish to GitHub Packages
         env:
           GITHUB_ACTOR: ${{ github.actor }}
