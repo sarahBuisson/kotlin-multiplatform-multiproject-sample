@@ -14,6 +14,15 @@ jobs:
         run: echo "SNAPAPPA"
       - if: contains('S', 'SNAPSHOT')
         run: echo "ssss"
+
+
+      - name: Set QA Environment
+        run: echo "::set-env name=ENVIRONMENT::qa"
+
+      - name: Set QA Environment2
+        run: echo "${{env.ENVIRONMENT}}"
+      - name: Set QA Environment3
+        run: echo $ENVIRONMENT
       - name: Build
         run: gradle build packJsNpmToMaven
       - uses: actions/setup-ruby@v1
@@ -90,6 +99,7 @@ jobs:
             mvn help:evaluate -Dexpression=project.version -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout
             echo 'define env ${{env.BUILD_VERSION}}'
             echo $BUILD_VERSION
+
       - name: ddd
         run: |
           echo 'define env ${{env.BUILD_VERSION}}'
