@@ -17,7 +17,7 @@ jobs:
 
 
       - name: Set QA Environment
-        run: echo "::set-env name=ENVIRONMENT::qa"
+        run: echo "::set-env name=ENVIRONMENT::$(echo qa)"
 
       - name: Set QA Environment2
         run: echo "${{env.ENVIRONMENT}}"
