@@ -91,8 +91,10 @@ jobs:
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPO_URL: 'sarahBuisson/private_repo_snapshot'
-        run: gradle build packJsNpmToMaven publish
+          GITHUB_REPO_URL: 'sarahBuisson/private_repo_snapshot/package'
+        run: |
+        echo ${{github.repository}}
+        gradle build packJsNpmToMaven publish
       - if: false == contains(env.BUILD_VERSION, 'SNAPSHOT')
         name: Publish to GitHub Packages
         env:
