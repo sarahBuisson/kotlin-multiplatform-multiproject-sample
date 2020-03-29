@@ -12,31 +12,9 @@ jobs:
           java-version: 11
       - name: Build
         run: gradle build packJsNpmToMaven jacocoTestReport generatePomFileForKotlinMultiplatformPublication
-
-      - uses: actions/upload-artifact@v2-preview
-        with:
-          name: M3-jvm
-          path:  M3/build/libs/M3-jvm-*.jar
-
       - uses: actions/setup-ruby@v1
         with:
           ruby-version: '2.5'
-      - name: Install package-cloud
-        run: |
-          gem install package_cloud
-          cat > /home/runner/.packagecloud <<EOL
-          {"url":"https://packagecloud.io","token":"${{secrets.REPO_PACKAGE_KEY}}"}
-      - name: remove previous snapshot
-        run: |
-          package_cloud yank sarahBuisson/sarahbuisson/java somewhere/M3-jvm-SNAPSHOT.jar
-      - name: Publish snapshot
-        run: |
-          {
-           echo 0
-           echo 0
-           echo y
-           }  | package_cloud push sarahBuisson/sarahbuisson M3/build/libs/M3-jvm-*.jar --coordinates=somewhere:M3-jvm:SNAPSHOT
-
       - name: Build reportDir
         env:
           buildReportsDir: "buildReports"
