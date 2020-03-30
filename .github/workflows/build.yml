@@ -51,10 +51,6 @@ jobs:
         run: |
           mkdir -p ${{env.buildReportsDir}}/${{env.branchName}}/reports/M3
           mkdir -p ${{env.buildReportsDir}}/${{env.branchName}}/reports/M4
-          ls
-          ls M3
-          ls M3/build
-          ls M3/build/npm
           cp -b -r M3/build/reports ${{env.buildReportsDir}}/${{env.branchName}}/reports/M3/jacoco;
           cp -b -r M4/build/reports ${{env.buildReportsDir}}/${{env.branchName}}/reports/M4/jacoco;
 
