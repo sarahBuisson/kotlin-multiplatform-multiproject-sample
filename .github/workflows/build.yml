@@ -11,7 +11,7 @@ jobs:
         with:
           java-version: 11
       - name: Build
-        run: gradle build packJsNpmToMaven
+        run: gradle build
       - uses: actions/setup-ruby@v1
         with:
           ruby-version: '2.5'
@@ -94,11 +94,11 @@ jobs:
           GITHUB_REPO_URL: 'sarahBuisson/testdivers'
         run: |
          echo ${{github.repository}}
-         gradle build packJsNpmToMaven publish
+         gradle build publish
       - if: false == contains(env.BUILD_VERSION, 'SNAPSHOT')
         name: Publish to GitHub Packages
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPO_URL: ${{ github.repository }}
-        run: gradle  build packJsNpmToMaven publish
+        run: gradle  build publish
