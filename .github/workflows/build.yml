@@ -12,9 +12,6 @@ jobs:
           java-version: 11
       - name: Build
         run: gradle build
-      - uses: actions/setup-ruby@v1
-        with:
-          ruby-version: '2.5'
       - name: Build reportDir
         env:
           buildReportsDir: "buildReports"
@@ -91,7 +88,7 @@ jobs:
         run: |
          echo ${{github.repository}}
          echo ${{env.GITHUB_REPO_URL}}
-         gradle build publish
+         gradle build publishJvmPublicationToMavenRepository
       - if: false == contains(env.BUILD_VERSION, 'SNAPSHOT')
         name: Publish to GitHub Packages
         env:
