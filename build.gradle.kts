@@ -25,7 +25,7 @@ allprojects {
 
 subprojects {
     this.extra.set("kotlinVersion", kotlinVersion)
-    apply(from = "${rootDir}/gradle/scripts/kotlinMultiNpm.gradle.kts")
+    //apply(from = "${rootDir}/gradle/scripts/kotlinMultiNpm.gradle.kts")
     apply(from = "${rootDir}/gradle/scripts/jacoco.gradle.kts")
     apply(from = "${rootDir}/gradle/scripts/github.gradle.kts")
 
