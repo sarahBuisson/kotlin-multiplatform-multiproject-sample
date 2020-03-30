@@ -91,7 +91,7 @@ jobs:
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPO_URL: 'sarahBuisson/private_repo_snapshot/package'
+          GITHUB_REPO_URL: 'sarahBuisson/testdivers'
         run: |
          echo ${{github.repository}}
          gradle build packJsNpmToMaven publish
