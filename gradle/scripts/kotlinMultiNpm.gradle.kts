@@ -102,7 +102,7 @@ public open class NpmToMavenPlugin : Plugin<Project> {
            register("mavenGithub", MavenPublication::class) {
                 artifact(project.file("${project.buildDir}/npm/${project.name}-npm-${project.version}.jar"))
                 groupId = project.group.toString()
-                artifactId = project.name
+                artifactId = project.name+"-npm"
                 version = project.version.toString()
             }
 
