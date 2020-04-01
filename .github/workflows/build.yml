@@ -84,7 +84,7 @@ jobs:
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPO_URL: 'sarahBuisson/testdivers'
+          GITHUB_REPO_URL: 'sarahBuisson/kotlin-multiplatform-multiproject-sample2'
         run: |
          echo ${{github.repository}}
          echo ${{env.GITHUB_REPO_URL}}
