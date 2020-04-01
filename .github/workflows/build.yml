@@ -90,7 +90,7 @@ jobs:
           echo ${{env.GITHUB_REPO_URL}}
           echo ${{secrets.GITHUB_TOKEN}}
           curl -X DELETE "https://${{secrets.REPO_PACKAGE_KEY}}@packagecloud.io/api/v1/repos/sarahBuisson/sarahbuisson/java/maven2/somewhere/M3-jvm-SNAPSHOT.jar" || true
-          curl -X POST -F "package[distro_version_id]=17"   -F "package[package_file]=@M3/build/libs/M3-jvm-${{BUILD_VERSION}}.jar"   -F "package[coordinates]=somewhere:M3-jvm:SNAPSHOT"  "https://packagecloud.io/api/v1/repos/user/repo/packages.json
+          curl -X POST -F "package[distro_version_id]=17"   -F "package[package_file]=@M3/build/libs/M3-jvm-${{env.BUILD_VERSION}}.jar"   -F "package[coordinates]=somewhere:M3-jvm:SNAPSHOT"  "https://packagecloud.io/api/v1/repos/user/repo/packages.json
 
       - if: false == contains(env.BUILD_VERSION, 'SNAPSHOT')
         name: Publish to GitHub Packages
