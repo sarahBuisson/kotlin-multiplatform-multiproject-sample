@@ -94,6 +94,7 @@ jobs:
           echo ${{env.DISTRO_MAVEN}}
           echo ${{env.PACKAGECLOUD_REPO}}
           echo ${{env.GROUPID}}
+          echo ${{env.BUILD_ARTIFACT_ID}}
           curl -X DELETE "https://${{secrets.REPO_PACKAGE_KEY}}@packagecloud.io/api/v1/repos/${{env.PACKAGECLOUD_REPO}}/java/maven2/${{env.GROUPID}}/${{env.BUILD_ARTIFACT_ID}}-SNAPSHOT.jar" || true
           curl -X POST -F "package[distro_version_id]=${{env.DISTRO_MAVEN}}" -F "package[package_file]=@M3/build/libs/{{env.BUILD_ARTIFACT_ID}}-${{env.BUILD_VERSION}}.jar" -F "package[coordinates]=${{env.GROUPID}}:${{env.ARTIFACTID}}:SNAPSHOT"  "https://${{secrets.REPO_PACKAGE_KEY}}@packagecloud.io/api/v1/repos/${{env.PACKAGECLOUD_REPO}}/packages.json
 
