@@ -85,12 +85,17 @@ jobs:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPO_URL: 'sarahBuisson/kotlin-multiplatform-multiproject-sample'
+          DISTRO_MAVEN: 167
+          PACKAGECLOUD_REPO: 'sarahBuisson/sarahbuisson'
+          GROUPID: 'somewhere'
         run: |
           echo ${{github.repository}}
           echo ${{env.GITHUB_REPO_URL}}
-          echo ${{secrets.GITHUB_TOKEN}}
-          curl -X DELETE "https://${{secrets.REPO_PACKAGE_KEY}}@packagecloud.io/api/v1/repos/sarahBuisson/sarahbuisson/java/maven2/somewhere/M3-jvm-SNAPSHOT.jar" || true
-          curl -X POST -F "package[distro_version_id]=17" -F "package[package_file]=@M3/build/libs/M3-jvm-${{env.BUILD_VERSION}}.jar"   -F "package[coordinates]=somewhere:M3-jvm:SNAPSHOT"  "https://${{secrets.REPO_PACKAGE_KEY}}@packagecloud.io/api/v1/repos/user/repo/packages.json
+          echo ${{env.DISTRO_MAVEN}}
+          echo ${{env.PACKAGECLOUD_REPO}}
+          echo ${{env.GROUPID}}
+          curl -X DELETE "https://${{secrets.REPO_PACKAGE_KEY}}@packagecloud.io/api/v1/repos/${{env.PACKAGECLOUD_REPO}}/java/maven2/${{env.GROUPID}}/${{env.BUILD_ARTIFACT_ID}}-SNAPSHOT.jar" || true
+          curl -X POST -F "package[distro_version_id]=${{env.DISTRO_MAVEN}}" -F "package[package_file]=@M3/build/libs/{{env.BUILD_ARTIFACT_ID}}-${{env.BUILD_VERSION}}.jar" -F "package[coordinates]=${{env.GROUPID}}:${{env.ARTIFACTID}}:SNAPSHOT"  "https://${{secrets.REPO_PACKAGE_KEY}}@packagecloud.io/api/v1/repos/${{env.PACKAGECLOUD_REPO}}/packages.json
 
       - if: false == contains(env.BUILD_VERSION, 'SNAPSHOT')
         name: Publish to GitHub Packages
