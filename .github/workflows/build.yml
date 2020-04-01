@@ -78,6 +78,7 @@ jobs:
           gradle generatePomFileForKotlinMultiplatformPublication
           echo "::set-env name=BUILD_VERSION::$(mvn help:evaluate -Dexpression=project.version -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)"
           echo "::set-env name=BUILD_ARTIFACT_ID::$(mvn help:evaluate -Dexpression=project.artifactId -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)"
+          echo "::set-env name=BUILD_GROUP_ID::$(mvn help:evaluate -Dexpression=project.groupId -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)"
 
       - if: contains(env.BUILD_VERSION, 'SNAPSHOT')
         name: Publish to GitHub Packages private
@@ -93,7 +94,9 @@ jobs:
           echo ${{env.GITHUB_REPO_URL}}
           echo ${{env.DISTRO_MAVEN}}
           echo ${{env.PACKAGECLOUD_REPO}}
+          echo ${{env.BUILD_GROUP_ID}}
           echo ${{env.GROUPID}}
+          ls M3/build/libs/   
           echo ${{env.BUILD_ARTIFACT_ID}}
           curl -X DELETE "https://${{secrets.REPO_PACKAGE_KEY}}@packagecloud.io/api/v1/repos/${{env.PACKAGECLOUD_REPO}}/java/maven2/${{env.GROUPID}}/${{env.BUILD_ARTIFACT_ID}}-jvm-SNAPSHOT.jar" || true
           curl -X POST -F "package[distro_version_id]=${{env.DISTRO_MAVEN}}" -F "package[package_file]=@M3/build/libs/${{env.BUILD_ARTIFACT_ID}}-jvm-${{env.BUILD_VERSION}}.jar" -F "package[coordinates]=${{env.GROUPID}}:${{env.BUILD_ARTIFACT_ID}}:SNAPSHOT"  "https://${{secrets.REPO_PACKAGE_KEY}}@packagecloud.io/api/v1/repos/${{env.PACKAGECLOUD_REPO}}/packages.json
