@@ -99,7 +99,7 @@ jobs:
           ls M3/build/libs/   
           echo ${{env.BUILD_ARTIFACT_ID}}
           curl -X DELETE "https://${{secrets.REPO_PACKAGE_KEY}}@packagecloud.io/api/v1/repos/${{env.PACKAGECLOUD_REPO}}/java/maven2/${{env.GROUPID}}/${{env.BUILD_ARTIFACT_ID}}-jvm-SNAPSHOT.jar" || true
-          curl -X POST -F "package[distro_version_id]=${{env.DISTRO_MAVEN}}" -F "package[package_file]=@M3/build/libs/${{env.BUILD_ARTIFACT_ID}}-jvm-${{env.BUILD_VERSION}}.jar" -F "package[coordinates]=${{env.GROUPID}}:${{env.BUILD_ARTIFACT_ID}}:SNAPSHOT"  "https://${{secrets.REPO_PACKAGE_KEY}}@packagecloud.io/api/v1/repos/${{env.PACKAGECLOUD_REPO}}/packages.json
+          curl -X POST -F "package[distro_version_id]=${{env.DISTRO_MAVEN}}" -F "package[package_file]=@M3/build/libs/${{env.BUILD_ARTIFACT_ID}}-jvm-${{env.BUILD_VERSION}}.jar" -F "package[coordinates]=${{env.GROUPID}}:${{env.BUILD_ARTIFACT_ID}}-jvm:SNAPSHOT"  "https://${{secrets.REPO_PACKAGE_KEY}}@packagecloud.io/api/v1/repos/${{env.PACKAGECLOUD_REPO}}/packages.json
 
       - if: false == contains(env.BUILD_VERSION, 'SNAPSHOT')
         name: Publish to GitHub Packages
