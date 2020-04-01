@@ -75,9 +75,9 @@ jobs:
 
       - name: extract build version
         run: |
-            gradle generatePomFileForKotlinMultiplatformPublication
-            echo "::set-env name=BUILD_VERSION::echo $(mvn help:evaluate -Dexpression=project.version -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)"
-            echo "::set-env name=BUILD_ARTIFACT_ID::echo $(mvn help:evaluate -Dexpression=project.artifactId -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)"
+          gradle generatePomFileForKotlinMultiplatformPublication
+          echo "::set-env name=BUILD_VERSION::echo $(mvn help:evaluate -Dexpression=project.version -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)"
+          echo "::set-env name=BUILD_ARTIFACT_ID::echo $(mvn help:evaluate -Dexpression=project.artifactId -q -f M3/build/publications/kotlinMultiplatform/pom-default.xml -DforceStdout)"
 
       - if: contains(env.BUILD_VERSION, 'SNAPSHOT')
         name: Publish to GitHub Packages private
@@ -86,10 +86,32 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPO_URL: 'sarahBuisson/kotlin-multiplatform-multiproject-sample'
         run: |
-         echo ${{github.repository}}
-         echo ${{env.GITHUB_REPO_URL}}
-         echo ${{secrets.GITHUB_TOKEN}}
-         gradle build publishJvmPublicationToMavenRepository
+          echo ${{github.repository}}
+          echo ${{env.GITHUB_REPO_URL}}
+          echo ${{secrets.GITHUB_TOKEN}}
+      - if: contains(env.BUILD_VERSION, 'SNAPSHOT')
+        uses: actions/setup-ruby@v1
+          with:
+            ruby-version: '2.5'
+      - if: contains(env.BUILD_VERSION, 'SNAPSHOT')
+        name: Install package-cloud
+        run: |
+          gem install package_cloud
+          cat > /home/runner/.packagecloud <<EOL
+          {"url":"https://packagecloud.io","token":"${{secrets.REPO_PACKAGE_KEY}}"}
+      - if: contains(env.BUILD_VERSION, 'SNAPSHOT')
+        name: remove previous snapshot
+        run: |
+          package_cloud yank sarahBuisson/sarahbuisson/java somewhere/M3-jvm-SNAPSHOT.jar || true
+      - if: contains(env.BUILD_VERSION, 'SNAPSHOT')
+        name: Publish snapshot
+        run: |
+          {
+           echo 0
+           echo 0
+           echo y
+           }  | package_cloud push sarahBuisson/sarahbuisson M3/build/libs/M3-jvm-*.jar --coordinates=somewhere:M3-jvm:SNAPSHOT
+
       - if: false == contains(env.BUILD_VERSION, 'SNAPSHOT')
         name: Publish to GitHub Packages
         env:
