@@ -84,10 +84,11 @@ jobs:
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPO_URL: 'sarahBuisson/kotlin-multiplatform-multiproject-sample2'
+          GITHUB_REPO_URL: 'sarahBuisson/kotlin-multiplatform-multiproject-sample'
         run: |
          echo ${{github.repository}}
          echo ${{env.GITHUB_REPO_URL}}
+         echo ${{secrets.GITHUB_TOKEN}}
          gradle build publishJvmPublicationToMavenRepository
       - if: false == contains(env.BUILD_VERSION, 'SNAPSHOT')
         name: Publish to GitHub Packages
