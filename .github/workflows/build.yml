@@ -29,8 +29,8 @@ jobs:
            <p>GitHub Pages with <strong>${{ github.sha }}</strong> commit ID has been deployed through <a href="https://github.com/marketplace/actions/github-pages">GitHub Pages action</a> successfully.</p>
           <p>jacocoReports:
 
-          <a href="${{env.branchName}}/reports/M3/jacoco">M3</a>
-          <a href="/${{env.branchName}}/reports/M4/jacoco">M4</a>
+          <a href="${{env.branchName}}/M3/jacoco/reports/index.html">M3</a>
+          <a href="${{env.branchName}}/M4/jacoco/reports/index.html">M4</a>
           </p>
           <p>
           artifacts:
