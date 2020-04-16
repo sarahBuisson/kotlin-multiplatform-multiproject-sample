@@ -130,8 +130,8 @@ jobs:
                     FILE_NAME='$ARTIFACT-$ART_TYPE-${{env.BUILD_VERSION}}.jar'
                     echo FILE_NAME
                     echo $FILE_NAME
-                    FILE_PATH='@$ARTIFACTS/build/libs/$FILE_NAME'
-                    COORDINATES='${{env.BUILD_GROUP_ID}}:${ART_TYPE}-$ART_TYPE:${{env.BUILD_VERSION}}'
+                    FILE_PATH="@$ARTIFACTS/build/libs/$FILE_NAME"
+                    COORDINATES="${{env.BUILD_GROUP_ID}}:${ART_TYPE}-$ART_TYPE:${{env.BUILD_VERSION}}"
                     #delete previous version
                     curl -X DELETE "https://${{secrets.REPO_PACKAGE_KEY}}@packagecloud.io/api/v1/repos/${{env.PACKAGECLOUD_REPO}}/java/maven2/${{env.BUILD_GROUP_ID}}/$FILE_NAME" || true
                       #save new version
