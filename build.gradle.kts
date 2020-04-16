@@ -7,7 +7,7 @@ repositories {
 }
 val kotlinVersion = "1.3.61"
 val rootGroup = "com.example.my.library"
-val rootVersion = "0.0.4-SNAPSHOT"
+val rootVersion = "0.0.5-SNAPSHOT"
 
 
 plugins {
