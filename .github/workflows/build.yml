@@ -8,8 +8,7 @@ jobs:
     steps:
 
 
-      - if: contains(env.BUILD_VERSION, 'SNAPSHOT')
-        name: Publish to GitHub Packages private
+      - name: Publish to GitHub Packages private
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
