@@ -55,23 +55,10 @@ jobs:
         if: success()
         uses: crazy-max/ghaction-github-pages@v1
         with:
-          target_branch: gh-reports
+          target_branch: gh-pages
           build_dir: "buildReports"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/upload-artifact@v2-preview
-        with:
-          name: npm-M3
-          path: M3/build/npm/M3-npm-*.jar
-      - uses: actions/upload-artifact@v2-preview
-        with:
-          name: npm-M4
-          path: M4/build/npm/M4-npm-*.jar
-
-      - uses: actions/upload-artifact@v2-preview
-        with:
-          name: reports-jacoco
-          path:  ./**/build/reports/
 
       - name: extract build version
         run: |
@@ -85,23 +72,29 @@ jobs:
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPO_URL: 'sarahBuisson/kotlin-multiplatform-multiproject-sample'
           DISTRO_MAVEN: 167
           PACKAGECLOUD_REPO: 'sarahBuisson/sarahbuisson'
           GROUPID: 'somewhere'
-          SNAPSHOT_FILE: '@M3/build/libs/${{env.BUILD_ARTIFACT_ID}}-jvm-${{env.BUILD_VERSION}}.jar'
-          COORDINATES: '${{env.GROUPID}}:${{env.BUILD_ARTIFACT_ID}}-jvm:SNAPSHOT' 
+
         run: |
-          echo ${{github.repository}}
-          echo ${{env.GITHUB_REPO_URL}}
-          echo ${{env.DISTRO_MAVEN}}
-          echo ${{env.PACKAGECLOUD_REPO}}
-          echo ${{env.BUILD_GROUP_ID}}
-          echo ${{env.GROUPID}}
-          ls M3/build/libs/   
-          echo ${{env.BUILD_ARTIFACT_ID}}
-          curl -X DELETE "https://${{secrets.REPO_PACKAGE_KEY}}@packagecloud.io/api/v1/repos/${{env.PACKAGECLOUD_REPO}}/java/maven2/${{env.GROUPID}}/${{env.BUILD_ARTIFACT_ID}}-jvm-SNAPSHOT.jar" || true
-          curl -X POST -F "package[distro_version_id]=${{env.DISTRO_MAVEN}}" -F "package[package_file]=${{env.SNAPSHOT_FILE}}" -F "package[coordinates]=${{env.COORDINATES}}"  "https://${{secrets.REPO_PACKAGE_KEY}}@packagecloud.io/api/v1/repos/${{env.PACKAGECLOUD_REPO}}/packages.json"
+          ARTIFACTS=array(M3 M4)
+          ARTIFACT_TYPE=array(js jvm)
+          for ARTIFACT in "${ARTIFACTS[@]}"
+          do
+             :
+          for ART_TYPE in "${ARTIFACT_TYPE[@]}"
+                   do
+                      :
+                    FILE_NAME='${ARTIFACTS}-${ART_TYPE}-${{env.BUILD_VERSION}}.jar'
+                    FILE_PATH='@$ARTIFACTS/build/libs/$FILE_NAME'
+                    COORDINATES: '${{env.BUILD_GROUP_ID}}:${ART_TYPE}-$ART_TYPE:${{env.BUILD_VERSION}}'
+                    #delete previous version
+                    curl -X DELETE "https://${{secrets.REPO_PACKAGE_KEY}}@packagecloud.io/api/v1/repos/${{env.PACKAGECLOUD_REPO}}/java/maven2/${{env.GROUPID}}/$FILE_NAME" || true
+                      #save new version
+                    curl -X POST -F "package[distro_version_id]=${{env.DISTRO_MAVEN}}" -F "package[package_file]=${FILE_PATH}" -F "package[coordinates]=${{env.COORDINATES}}"  "https://${{secrets.REPO_PACKAGE_KEY}}@packagecloud.io/api/v1/repos/${{env.PACKAGECLOUD_REPO}}/packages.json"
+
+          done
+          done
 
       - if: false == contains(env.BUILD_VERSION, 'SNAPSHOT')
         name: Publish to GitHub Packages
