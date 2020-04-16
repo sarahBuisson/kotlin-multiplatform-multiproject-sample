@@ -127,7 +127,7 @@ jobs:
                    do
                       :
                     DISTRO_MAVEN=$(DISTRO_MAVEN_FOR_TYPE ART_TYPE)
-                    FILE_NAME='${ARTIFACTS}-${ART_TYPE}-${{env.BUILD_VERSION}}.jar'
+                    FILE_NAME='$ARTIFACT-$ART_TYPE-${{env.BUILD_VERSION}}.jar'
                     echo FILE_NAME
                     echo $FILE_NAME
                     FILE_PATH='@$ARTIFACTS/build/libs/$FILE_NAME'
@@ -136,8 +136,8 @@ jobs:
                     curl -X DELETE "https://${{secrets.REPO_PACKAGE_KEY}}@packagecloud.io/api/v1/repos/${{env.PACKAGECLOUD_REPO}}/java/maven2/${{env.BUILD_GROUP_ID}}/$FILE_NAME" || true
                       #save new version
           echo "delete previous"
-                    curl -X POST -F "package[distro_version_id]=${{env.DISTRO_MAVEN}}" -F "package[package_file]=${FILE_PATH}" -F "package[coordinates]=${{env.COORDINATES}}"  "https://${{secrets.REPO_PACKAGE_KEY}}@packagecloud.io/api/v1/repos/${{env.PACKAGECLOUD_REPO}}/packages.json"
-                   echo "send new package $$FILE_NAME"
+                    curl -X POST -F "package[distro_version_id]=$DISTRO_MAVEN" -F "package[package_file]=$FILE_PATH" -F "package[coordinates]=${COORDINATES}"  "https://${{secrets.REPO_PACKAGE_KEY}}@packagecloud.io/api/v1/repos/${{env.PACKAGECLOUD_REPO}}/packages.json"
+                   echo "send new package $FILE_NAME"
               done
           done
 
