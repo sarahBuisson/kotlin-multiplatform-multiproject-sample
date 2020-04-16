@@ -127,9 +127,9 @@ jobs:
                    do
                       :
                     DISTRO_MAVEN=$(DISTRO_MAVEN_FOR_TYPE ART_TYPE)
-                    FILE_NAME='$ARTIFACT-$ART_TYPE-${{env.BUILD_VERSION}}.jar'
-                    echo FILE_NAME
+                    FILE_NAME="$ARTIFACT-$ART_TYPE-${{env.BUILD_VERSION}}.jar"
                     echo $FILE_NAME
+                    echo $DISTRO_MAVEN
                     FILE_PATH="@$ARTIFACTS/build/libs/$FILE_NAME"
                     COORDINATES="${{env.BUILD_GROUP_ID}}:${ART_TYPE}-$ART_TYPE:${{env.BUILD_VERSION}}"
                     #delete previous version
