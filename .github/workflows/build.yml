@@ -28,16 +28,16 @@ jobs:
           }
 
 
-          for ART_TYPE in "${ARTIFACTS[@]}"
+          for ARTIFACTS in "${ARTIFACTS[@]}"
           do
              :
-          for ART_TYPE in "${ARTIFACT_TYPE[@]}"
+            for ART_TYPE in "${ARTIFACT_TYPE[@]}"
                    do
                       :
 
 
-                  echo "$ART_TYPE $ART_TYPE"
-          done
+                  echo "ARTIFACTS $ART_TYPE"
+            done
           done
 
 
@@ -118,29 +118,24 @@ jobs:
               case $1 in
                   'jvm') echo '167';;
                   'js') echo '167';;
-                  'C3') echo 'ccc';;
                   *) echo 'zzz';;
               esac
           }
-
-
           for ARTIFACT in "${ARTIFACTS[@]}"
           do
              :
-          for ART_TYPE in "${ARTIFACT_TYPE[@]}"
+              for ART_TYPE in "${ARTIFACT_TYPE[@]}"
                    do
                       :
-
                     DISTRO_MAVEN=$(DISTRO_MAVEN_FOR_TYPE ART_TYPE)
                     FILE_NAME='${ARTIFACTS}-${ART_TYPE}-${{env.BUILD_VERSION}}.jar'
                     FILE_PATH='@$ARTIFACTS/build/libs/$FILE_NAME'
-                    COORDINATES: '${{env.BUILD_GROUP_ID}}:${ART_TYPE}-$ART_TYPE:${{env.BUILD_VERSION}}'
+                    COORDINATES='${{env.BUILD_GROUP_ID}}:${ART_TYPE}-$ART_TYPE:${{env.BUILD_VERSION}}'
                     #delete previous version
                     curl -X DELETE "https://${{secrets.REPO_PACKAGE_KEY}}@packagecloud.io/api/v1/repos/${{env.PACKAGECLOUD_REPO}}/java/maven2/${{env.BUILD_GROUP_ID}}/$FILE_NAME" || true
                       #save new version
                     curl -X POST -F "package[distro_version_id]=${{env.DISTRO_MAVEN}}" -F "package[package_file]=${FILE_PATH}" -F "package[coordinates]=${{env.COORDINATES}}"  "https://${{secrets.REPO_PACKAGE_KEY}}@packagecloud.io/api/v1/repos/${{env.PACKAGECLOUD_REPO}}/packages.json"
-
-          done
+              done
           done
 
       - if: false == contains(env.BUILD_VERSION, 'SNAPSHOT')
