@@ -72,19 +72,32 @@ jobs:
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DISTRO_MAVEN: 167
+          DISTRO_MAVEN: 167 # maven java packages
           PACKAGECLOUD_REPO: 'sarahBuisson/sarahbuisson'
           GROUPID: 'somewhere'
 
         run: |
-          ARTIFACTS=array(M3 M4)
-          ARTIFACT_TYPE=array(js jvm)
+          ARTIFACTS=(M3 M4)
+          ARTIFACT_TYPE=(js jvm)
+
+          DISTRO_MAVEN_FOR_TYPE() {
+              case $1 in
+                  'jvm') echo '167';;
+                  'js') echo '167';;
+                  'C3') echo 'ccc';;
+                  *) echo 'zzz';;
+              esac
+          }
+
+
           for ARTIFACT in "${ARTIFACTS[@]}"
           do
              :
           for ART_TYPE in "${ARTIFACT_TYPE[@]}"
                    do
                       :
+
+                    DISTRO_MAVEN=$(DISTRO_MAVEN_FOR_TYPE ART_TYPE)
                     FILE_NAME='${ARTIFACTS}-${ART_TYPE}-${{env.BUILD_VERSION}}.jar'
                     FILE_PATH='@$ARTIFACTS/build/libs/$FILE_NAME'
                     COORDINATES: '${{env.BUILD_GROUP_ID}}:${ART_TYPE}-$ART_TYPE:${{env.BUILD_VERSION}}'
