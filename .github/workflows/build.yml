@@ -79,7 +79,7 @@ jobs:
           ARTIFACTS=(M3 M4)
           ARTIFACT_TYPE=("npm" "jvm" "metadata")
 
-          DISTRO_MAVEN_FOR_TYPE() {
+          DISTRIBUTION_PACKAGECLOUD_FOR_TYPE() {
               case $1 in
                   'jvm') echo $DISTRO_MAVEN;;
                   'js') echo $DISTRO_NODEJS;;
@@ -92,17 +92,17 @@ jobs:
               for ART_TYPE in "${ARTIFACT_TYPE[@]}"
                    do
                       :
-                    DISTRO_MAVEN=$(DISTRO_MAVEN_FOR_TYPE $ART_TYPE)
+                    $DISTRIBUTION_PACKAGECLOUD=$(DISTRIBUTION_PACKAGECLOUD_FOR_TYPE $ART_TYPE)
                     FILE_NAME="$ARTIFACT-$ART_TYPE-${{env.BUILD_VERSION}}.jar"
                     echo $FILE_NAME
-                    echo $DISTRO_MAVEN
+                    echo $DISTRIBUTION_PACKAGECLOUD
                     FILE_PATH="@$ARTIFACT/build/libs/$FILE_NAME"
                     COORDINATES="${{env.BUILD_GROUP_ID}}:${ARTIFACT}-$ART_TYPE:${{env.BUILD_VERSION}}"
                     #delete previous version
                     curl -X DELETE "https://${{secrets.REPO_PACKAGE_KEY}}@packagecloud.io/api/v1/repos/${{env.PACKAGECLOUD_REPO}}/java/maven2/${{env.BUILD_GROUP_ID}}/$FILE_NAME" || true
                       #save new version
-          echo "delete previous"
-                    curl -X POST -F "package[distro_version_id]=$DISTRO_MAVEN" -F "package[package_file]=$FILE_PATH" -F "package[coordinates]=${COORDINATES}"  "https://${{secrets.REPO_PACKAGE_KEY}}@packagecloud.io/api/v1/repos/${{env.PACKAGECLOUD_REPO}}/packages.json"
+                    echo "delete previous"
+                    curl -X POST -F "package[distro_version_id]=$DISTRIBUTION_PACKAGECLOUD" -F "package[package_file]=$FILE_PATH" -F "package[coordinates]=${COORDINATES}"  "https://${{secrets.REPO_PACKAGE_KEY}}@packagecloud.io/api/v1/repos/${{env.PACKAGECLOUD_REPO}}/packages.json"
                    echo "send new package $FILE_NAME"
               done
           done
