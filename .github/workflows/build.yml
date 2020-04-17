@@ -79,7 +79,12 @@ jobs:
           ARTIFACTS=("M3" "M4")
           ARTIFACT_TYPE=("npm" "jvm" "metadata")
           DISTRIBUTION_PACKAGECLOUD_FOR_TYPE() {
-            echo 'XXX'
+              case $1 in
+                  'jvm') echo $DISTRO_MAVEN;;
+                  'js') echo $DISTRO_NODEJS;;
+                  'npm') echo $DISTRO_NODEJS;;
+                  *) echo '0';;
+              esac
           }
           echo $ARTIFACTS
           for ARTIFACT in "${ARTIFACTS[@]}"
@@ -89,7 +94,7 @@ jobs:
               for ART_TYPE in "${ARTIFACT_TYPE[@]}"
                 do
                     echo $ART_TYPE
-                    $DISTRIBUTION_PACKAGECLOUD=$(DISTRIBUTION_PACKAGECLOUD_FOR_TYPE $ART_TYPE)
+                    $DISTRIBUTION_PACKAGECLOUD=$($DISTRIBUTION_PACKAGECLOUD_FOR_TYPE $ART_TYPE)
                     echo $DISTRIBUTION_PACKAGECLOUD
                     FILE_NAME="$ARTIFACT-$ART_TYPE-${{env.BUILD_VERSION}}.jar"
                     echo $FILE_NAME
