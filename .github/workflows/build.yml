@@ -102,9 +102,9 @@ jobs:
                 do
                     echo $ART_TYPE
                     DISTRIBUTION_PACKAGECLOUD=$(DISTRIBUTION_PACKAGECLOUD_FOR_TYPE $ART_TYPE)
-                    FILE_EXTENTION_FOR_TYPE=$(FILE_EXTENTION_FOR_TYPE $ART_TYPE)
+                    FILE_EXTENTION=$(FILE_EXTENTION_FOR_TYPE $ART_TYPE)
                     echo $DISTRIBUTION_PACKAGECLOUD
-                    FILE_NAME="$ARTIFACT-$ART_TYPE-${{env.BUILD_VERSION}}.$FILE_EXTENTION_FOR_TYPE"
+                    FILE_NAME="$ARTIFACT-$ART_TYPE-${{env.BUILD_VERSION}}.FILE_EXTENTION"
                     echo $FILE_NAME
                     echo $DISTRIBUTION_PACKAGECLOUD
                     FILE_PATH="@$ARTIFACT/build/libs/$FILE_NAME"
