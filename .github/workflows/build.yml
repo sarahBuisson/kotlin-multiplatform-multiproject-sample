@@ -82,15 +82,11 @@ jobs:
               case $1 in
                   'jvm') echo $DISTRO_MAVEN;;
                   'js') echo $DISTRO_NODEJS;;
-                  *) echo 0;;
+                  *) echo '0';;
               esac
           }
-          for ARTIFACT in "${ARTIFACTS[@]}"
-          do
-             :
-              for ART_TYPE in "${ARTIFACT_TYPE[@]}"
-                   do
-                      :
+          for ARTIFACT in "${ARTIFACTS[@]}" do
+              for ART_TYPE in "${ARTIFACT_TYPE[@]}" do
                     $DISTRIBUTION_PACKAGECLOUD=$(DISTRIBUTION_PACKAGECLOUD_FOR_TYPE $ART_TYPE)
                     FILE_NAME="$ARTIFACT-$ART_TYPE-${{env.BUILD_VERSION}}.jar"
                     echo $FILE_NAME
