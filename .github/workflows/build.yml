@@ -77,7 +77,7 @@ jobs:
           PACKAGECLOUD_REPO: 'sarahBuisson/sarahbuisson'
         run: |
           ARTIFACTS=("M3" "M4")
-          ARTIFACT_TYPE=("npm" "jvm" "metadata")
+          ARTIFACT_TYPE=("npm" "jvm")
           DISTRIBUTION_PACKAGECLOUD_FOR_TYPE() {
               case $1 in
                   'jvm') echo $DISTRO_MAVEN;;
