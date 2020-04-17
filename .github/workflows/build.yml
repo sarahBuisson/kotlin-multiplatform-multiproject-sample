@@ -107,7 +107,7 @@ jobs:
               done
           done
 
-      - if: false == contains(env.BUILD_VERSION, 'SNAPSHOT')
+      - if: (env.BUILD_VERSION && false == contains(env.BUILD_VERSION, 'SNAPSHOT'))
         name: Publish to GitHub Packages
         env:
           GITHUB_ACTOR: ${{ github.actor }}
