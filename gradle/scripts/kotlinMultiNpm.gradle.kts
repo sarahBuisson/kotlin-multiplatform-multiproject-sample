@@ -100,7 +100,7 @@ public open class NpmToMavenPlugin : Plugin<Project> {
         val publishingExtension = project.extensions["publishing"] as org.gradle.api.publish.internal.DefaultPublishingExtension;
          publishingExtension.publications {
            register("mavenGithub", MavenPublication::class) {
-                artifact(project.file("${project.buildDir}/npm/${project.name}-npm-${project.version}.jar"))
+                artifact(project.file("${project.buildDir}/libs/${project.name}-npm-${project.version}.jar"))
                 groupId = project.group.toString()
                 artifactId = project.name+"-npm"
                 version = project.version.toString()
