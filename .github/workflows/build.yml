@@ -78,7 +78,6 @@ jobs:
         run: |
           ARTIFACTS=(M3 M4)
           ARTIFACT_TYPE=("npm" "jvm" "metadata")
-
           DISTRIBUTION_PACKAGECLOUD_FOR_TYPE() {
               case $1 in
                   'jvm') echo $DISTRO_MAVEN;;
