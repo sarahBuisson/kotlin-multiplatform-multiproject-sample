@@ -108,6 +108,8 @@ public open class NpmToMavenPlugin : Plugin<Project> {
 
         }
 
+        project.apply(plugin = ("org.jetbrains.kotlin.multiplatform"))
+        project.tasks.get("build").dependsOn(project.tasks.get("packJsNpmToMaven"))
     }
 }
 
