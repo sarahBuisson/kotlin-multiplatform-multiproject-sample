@@ -94,6 +94,7 @@ jobs:
                 do
                     echo $ART_TYPE
                     $DISTRIBUTION_PACKAGECLOUD=$(DISTRIBUTION_PACKAGECLOUD_FOR_TYPE $ART_TYPE)
+                    echo $DISTRIBUTION_PACKAGECLOUD
                     FILE_NAME="$ARTIFACT-$ART_TYPE-${{env.BUILD_VERSION}}.jar"
                     echo $FILE_NAME
                     echo $DISTRIBUTION_PACKAGECLOUD
