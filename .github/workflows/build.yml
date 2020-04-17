@@ -76,7 +76,7 @@ jobs:
           DISTRO_NODEJS: 191 # nodejs packages
           PACKAGECLOUD_REPO: 'sarahBuisson/sarahbuisson'
         run: |
-          ARTIFACTS=(M3 M4)
+          ARTIFACTS=("M3" "M4")
           ARTIFACT_TYPE=("npm" "jvm" "metadata")
           DISTRIBUTION_PACKAGECLOUD_FOR_TYPE() {
               case $1 in
@@ -88,9 +88,11 @@ jobs:
           echo $ARTIFACTS
           for ARTIFACT in "${ARTIFACTS[@]}"
             do
+          
               echo $ARTIFACT_TYPE
               for ART_TYPE in "${ARTIFACT_TYPE[@]}"
                 do
+                    echo $ART_TYPE
                     $DISTRIBUTION_PACKAGECLOUD=$(DISTRIBUTION_PACKAGECLOUD_FOR_TYPE $ART_TYPE)
                     FILE_NAME="$ARTIFACT-$ART_TYPE-${{env.BUILD_VERSION}}.jar"
                     echo $FILE_NAME
