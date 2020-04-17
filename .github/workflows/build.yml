@@ -79,11 +79,7 @@ jobs:
           ARTIFACTS=("M3" "M4")
           ARTIFACT_TYPE=("npm" "jvm" "metadata")
           DISTRIBUTION_PACKAGECLOUD_FOR_TYPE() {
-              case $1 in
-                  'jvm') echo $DISTRO_MAVEN;;
-                  'js') echo $DISTRO_NODEJS;;
-                  *) echo '0';;
-              esac
+            echo 'XXX'
           }
           echo $ARTIFACTS
           for ARTIFACT in "${ARTIFACTS[@]}"
