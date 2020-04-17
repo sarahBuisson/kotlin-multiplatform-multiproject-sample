@@ -20,6 +20,7 @@ plugins {
 allprojects {
     this.group = rootGroup
     this.version = rootVersion
+    repositories { mavenCentral() }
 
 }
 

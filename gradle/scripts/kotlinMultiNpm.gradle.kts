@@ -88,7 +88,7 @@ public open class NpmToMavenPlugin : Plugin<Project> {
             println("register packJsNpmToMaven")
             this.from("${project.buildDir}/jsNpmToMaven")
             this.archiveFileName.set("${project.name}-npm-${project.version}.jar")
-            this.destinationDirectory.set(project.file("${project.buildDir}/npm"))
+            this.destinationDirectory.set(project.file("${project.buildDir}/libs"))
             this.dependsOn("unpackJsNpm")
             this.dependsOn(movePackageJson)
             println(project.tasks.names)
