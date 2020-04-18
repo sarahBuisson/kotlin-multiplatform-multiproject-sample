@@ -2,17 +2,11 @@ import groovy.json.JsonBuilder
 import org.gradle.api.publish.maven.MavenPublication
 
 
-repositories {
-    mavenCentral()
-}
-val kotlinVersion = "1.3.61"
-val rootGroup = "com.example.my.library"
+val rootGroup = "com.example.mkotlinVersiony.library"
 val rootVersion = "0.0.5-SNAPSHOT"
 
-
 plugins {
-    val kotlinVersion = "1.3.61"
-    kotlin("multiplatform").version(kotlinVersion)
+    kotlin("multiplatform") version "1.3.72"
     id("maven-publish")
     jacoco
 
@@ -20,14 +14,17 @@ plugins {
 allprojects {
     this.group = rootGroup
     this.version = rootVersion
-    repositories { mavenCentral() }
+    repositories {
+        maven(url ="https://packagecloud.io/sarahBuisson/sarahbuisson/maven2")
+        google()
+        jcenter()
+        mavenLocal()
+    }
 
 }
 
 subprojects {
-    this.extra.set("kotlinVersion", kotlinVersion)
     apply(from = "${rootDir}/gradle/scripts/kotlinMultiNpm.gradle.kts")
     apply(from = "${rootDir}/gradle/scripts/jacoco.gradle.kts")
     apply(from = "${rootDir}/gradle/scripts/github.gradle.kts")
-
 }
