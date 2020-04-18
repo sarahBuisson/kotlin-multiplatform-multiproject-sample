@@ -94,6 +94,16 @@ public open class NpmToMavenPlugin : Plugin<Project> {
             println(project.tasks.names)
 
         }
+       val packJsNpmToTgz by project.tasks.registering(Zip::class) {
+            println("register packJsNpmToMaven")
+            this.from("${project.buildDir}/jsNpmToMaven")
+            this.archiveFileName.set("${project.name}-npm-${project.version}.tgz")
+            this.destinationDirectory.set(project.file("${project.buildDir}/libs"))
+            this.dependsOn("unpackJsNpm")
+            this.dependsOn(movePackageJson)
+            println(project.tasks.names)
+
+        }
 
         project.apply(plugin = ("maven-publish"))
 
@@ -110,6 +120,7 @@ public open class NpmToMavenPlugin : Plugin<Project> {
 
         project.apply(plugin = ("org.jetbrains.kotlin.multiplatform"))
         project.tasks.get("build").dependsOn(project.tasks.get("packJsNpmToMaven"))
+        project.tasks.get("build").dependsOn(project.tasks.get("packJsNpmToTgz"))
     }
 }
 
