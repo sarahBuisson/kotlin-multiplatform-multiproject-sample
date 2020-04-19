@@ -10,8 +10,8 @@ public open class NpmToMavenPlugin : Plugin<Project> {
 
             doLast {
                 println("run buildPackageJsonForMaven")
-                val mainJs:String
-                if (rootProject != project) {
+                val mainJs: String
+                if (rootProject != null && rootProject != project) {
                     mainJs = rootProject.name + "-" + project.name + ".js"
                 } else {
                     mainJs = project.name + ".js"
