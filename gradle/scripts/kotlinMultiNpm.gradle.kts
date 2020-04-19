@@ -116,22 +116,22 @@ public open class NpmToMavenPlugin : Plugin<Project> {
                 artifactId = project.name+"-npm"
                 version = project.version.toString()
             }
-              register("mavenGithub", MavenPublication::class) {
+              register("mavenJsGithub", MavenPublication::class) {
                 artifact(project.file("${project.buildDir}/libs/${project.name}-npm-${project.version}.jar"))
                 groupId = project.group.toString()
                 artifactId = project.name+"-js"
                 version = project.version.toString()
             }
- register("mavenGithub", MavenPublication::class) {
+            register("mavenMetadataGithub", MavenPublication::class) {
                 artifact(project.file("${project.buildDir}/libs/${project.name}-metadata-${project.version}.jar"))
                 groupId = project.group.toString()
                 artifactId = project.name+"-metadata"
                 version = project.version.toString()
             }
-             register("mavenGithub", MavenPublication::class) {
-                 artifact(project.file("${project.buildDir}/libs/${project.name}-metadata-${project.version}.jar"))
+             register("mavenCommonGithub", MavenPublication::class) {
+                 artifact(project.file("${project.buildDir}/libs/${project.name}-common-${project.version}.jar"))
                  groupId = project.group.toString()
-                 artifactId = project.name+"-metadata"
+                 artifactId = project.name+"-common"
                  version = project.version.toString()
              }
 
