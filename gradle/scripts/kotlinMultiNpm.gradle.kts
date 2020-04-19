@@ -16,10 +16,11 @@ public open class NpmToMavenPlugin : Plugin<Project> {
                         "private" to true,
                         "dependencies" to mutableMapOf<String, Any?>(),
                         "scripts" to mutableMapOf<String, Any?>(
-                                "postinstall" to "install-jar-dependency package.json"
+                                "postinstall" to "npx install-jar-dependency package.json"
                         ),
                         "jarDependencies" to mutableMapOf<String, Any?>(),
                         "mavenDependencies" to mutableMapOf<String, Any?>(),
+                        "devDependencies" to mutableMapOf<String, Any?>("install-jar-dependency" to "0.0.4"),
                         "workspaces" to mutableListOf<Any?>(),
                         "bundledDependencies" to mutableListOf<Any?>(),
                         "main" to project.name,
@@ -109,12 +110,31 @@ public open class NpmToMavenPlugin : Plugin<Project> {
 
         val publishingExtension = project.extensions["publishing"] as org.gradle.api.publish.internal.DefaultPublishingExtension;
          publishingExtension.publications {
-           register("mavenGithub", MavenPublication::class) {
+           register("npmGithub", MavenPublication::class) {
                 artifact(project.file("${project.buildDir}/libs/${project.name}-npm-${project.version}.jar"))
                 groupId = project.group.toString()
                 artifactId = project.name+"-npm"
                 version = project.version.toString()
             }
+              register("mavenGithub", MavenPublication::class) {
+                artifact(project.file("${project.buildDir}/libs/${project.name}-npm-${project.version}.jar"))
+                groupId = project.group.toString()
+                artifactId = project.name+"-js"
+                version = project.version.toString()
+            }
+ register("mavenGithub", MavenPublication::class) {
+                artifact(project.file("${project.buildDir}/libs/${project.name}-metadata-${project.version}.jar"))
+                groupId = project.group.toString()
+                artifactId = project.name+"-metadata"
+                version = project.version.toString()
+            }
+             register("mavenGithub", MavenPublication::class) {
+                 artifact(project.file("${project.buildDir}/libs/${project.name}-metadata-${project.version}.jar"))
+                 groupId = project.group.toString()
+                 artifactId = project.name+"-metadata"
+                 version = project.version.toString()
+             }
+
 
         }
 
