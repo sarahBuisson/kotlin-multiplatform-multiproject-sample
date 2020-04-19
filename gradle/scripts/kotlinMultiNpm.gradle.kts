@@ -10,6 +10,12 @@ public open class NpmToMavenPlugin : Plugin<Project> {
 
             doLast {
                 println("run buildPackageJsonForMaven")
+                val mainJs:String
+                if (rootProject != project) {
+                    mainJs = rootProject.name + "-" + project.name + ".js"
+                } else {
+                    mainJs = project.name + ".js"
+                }
                 val packageJsonData = mutableMapOf(
                         "name" to project.name + "-js",
                         "version" to project.version,
@@ -23,7 +29,7 @@ public open class NpmToMavenPlugin : Plugin<Project> {
                         "devDependencies" to mutableMapOf<String, Any?>("install-jar-dependency" to "0.0.4"),
                         "workspaces" to mutableListOf<Any?>(),
                         "bundledDependencies" to mutableListOf<Any?>(),
-                        "main" to project.name,
+                        "main" to mainJs,
                         "author" to mutableMapOf<String, Any?>(
                                 "name" to "Sarah Buisson",
                                 "email" to "sarah.buisson@gmail.com",
@@ -122,7 +128,7 @@ public open class NpmToMavenPlugin : Plugin<Project> {
                 artifactId = project.name+"-js"
                 version = project.version.toString()
             }
-      
+
 
 
         }
