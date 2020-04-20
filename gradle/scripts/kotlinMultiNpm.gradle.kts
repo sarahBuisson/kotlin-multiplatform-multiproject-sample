@@ -1,4 +1,4 @@
-public open class NpmToMavenPlugin : Plugin<Project> {
+class NpmToMavenPlugin : Plugin<Project> {
 
     @javax.inject.Inject
     constructor() {
@@ -10,12 +10,7 @@ public open class NpmToMavenPlugin : Plugin<Project> {
 
             doLast {
                 println("run buildPackageJsonForMaven")
-                val mainJs: String
-                if (rootProject != null && rootProject != project) {
-                    mainJs = rootProject.name + "-" + project.name + ".js"
-                } else {
-                    mainJs = project.name + ".js"
-                }
+                val mainJs: String = project.file("${project.buildDir}/jsNpmToMaven").listFiles().first { it.extension == "js" && !it.nameWithoutExtension.endsWith("meta") }.name
                 val packageJsonData = mutableMapOf(
                         "name" to project.name + "-js",
                         "version" to project.version,
@@ -139,4 +134,4 @@ public open class NpmToMavenPlugin : Plugin<Project> {
     }
 }
 
-project.apply<NpmToMavenPlugin>()
+apply<NpmToMavenPlugin>()
