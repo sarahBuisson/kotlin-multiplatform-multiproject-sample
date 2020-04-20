@@ -10,7 +10,9 @@ class NpmToMavenPlugin : Plugin<Project> {
 
             doLast {
                 println("run buildPackageJsonForMaven")
-                val mainJs: String = project.file("${project.buildDir}/jsNpmToMaven").listFiles().first { it.extension == "js" && !it.nameWithoutExtension.endsWith("meta") }.name
+                val jsNpmToMavenDir = project.file("${project.buildDir}/jsNpmToMaven")
+                val mainJs: String = (jsNpmToMavenDir?.listFiles()?.first { it.extension == "js" && !it.nameWithoutExtension.endsWith("meta") }?.name)
+                        ?: "index.js"
                 val packageJsonData = mutableMapOf(
                         "name" to project.name + "-js",
                         "version" to project.version,
