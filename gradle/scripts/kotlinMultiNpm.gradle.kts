@@ -23,7 +23,7 @@ class NpmToMavenPlugin : Plugin<Project> {
                         ),
                         "jarDependencies" to mutableMapOf<String, Any?>(),
                         "mavenDependencies" to mutableMapOf<String, Any?>(),
-                        "devDependencies" to mutableMapOf<String, Any?>("install-jar-dependency" to "0.0.4"),
+                        "devDependencies" to mutableMapOf<String, Any?>("install-jar-dependency" to "0.0.5"),
                         "workspaces" to mutableListOf<Any?>(),
                         "bundledDependencies" to mutableListOf<Any?>(),
                         "main" to mainJs,
