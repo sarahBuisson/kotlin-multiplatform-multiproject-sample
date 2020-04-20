@@ -6,11 +6,20 @@ class NpmToMavenPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
 
+        val unpackJsNpm by project.tasks.registering(Copy::class) {
+            println("register unpackJsNpm in ${project.name}")
+            val jarJsPath = "${project.buildDir}/libs/${project.name}-js-${project.version}.jar"
+            this.from(project.zipTree(jarJsPath))
+            this.into("${project.buildDir}/jsNpmToMaven")
+            this.dependsOn("jsJar")
+        }
+
         val buildPackageJsonForMaven = project.tasks.register<DefaultTask>("buildPackageJsonForMaven") {
 
             doLast {
                 println("run buildPackageJsonForMaven")
                 val jsNpmToMavenDir = project.file("${project.buildDir}/jsNpmToMaven")
+                println( (jsNpmToMavenDir?.listFiles()?.first { it.extension == "js" && !it.nameWithoutExtension.endsWith("meta") }?.name))
                 val mainJs: String = (jsNpmToMavenDir?.listFiles()?.first { it.extension == "js" && !it.nameWithoutExtension.endsWith("meta") }?.name)
                         ?: "index.js"
                 val packageJsonData = mutableMapOf(
@@ -63,39 +72,28 @@ class NpmToMavenPlugin : Plugin<Project> {
                 (packageJsonData.get("dependencies") as MutableMap<String, Any>).put("kotlin", kotlinVersionPlugin)
 
                 project.plugins
-                val packageJson = project.file("${project.buildDir}/tmp/package.json")
+                val packageJson = project.file("${project.buildDir}/jsNpmToMaven/package.json")
                 if (!packageJson.getParentFile().exists())
                     packageJson.getParentFile().mkdirs()
                 packageJson.createNewFile()
                 packageJson.writeText(groovy.json.JsonBuilder(packageJsonData).toPrettyString())
             }
+            this.dependsOn(unpackJsNpm)
         }
 
 
 
-        project.tasks.register("unpackJsNpm", Copy::class) {
-            println("register unpackJsNpm in ${project.name}")
-            val jarJsPath = "${project.buildDir}/libs/${project.name}-js-${project.version}.jar"
-            this.from(project.zipTree(jarJsPath))
-            this.into("${project.buildDir}/jsNpmToMaven")
-            this.dependsOn("jsJar")
-        }
 
-        val movePackageJson = project.tasks.register("movePackageJson", Copy::class) {
 
-            this.from("${project.buildDir}/tmp/package.json")
-            this.into("${project.buildDir}/jsNpmToMaven")
-            this.dependsOn(buildPackageJsonForMaven)
-        }
+
 
         val packJsNpmToMaven by project.tasks.registering(Zip::class) {
             println("register packJsNpmToMaven")
             this.from("${project.buildDir}/jsNpmToMaven")
             this.archiveFileName.set("${project.name}-npm-${project.version}.jar")
             this.destinationDirectory.set(project.file("${project.buildDir}/libs"))
-            this.dependsOn("unpackJsNpm")
-            this.dependsOn(movePackageJson)
-            println(project.tasks.names)
+            this.dependsOn(unpackJsNpm)
+            this.dependsOn(buildPackageJsonForMaven)
 
         }
        val packJsNpmToTgz by project.tasks.registering(Zip::class) {
@@ -103,8 +101,8 @@ class NpmToMavenPlugin : Plugin<Project> {
             this.from("${project.buildDir}/jsNpmToMaven")
             this.archiveFileName.set("${project.name}-npm-${project.version}.tgz")
             this.destinationDirectory.set(project.file("${project.buildDir}/libs"))
-            this.dependsOn("unpackJsNpm")
-            this.dependsOn(movePackageJson)
+           this.dependsOn(unpackJsNpm)
+           this.dependsOn(buildPackageJsonForMaven)
             println(project.tasks.names)
 
         }
