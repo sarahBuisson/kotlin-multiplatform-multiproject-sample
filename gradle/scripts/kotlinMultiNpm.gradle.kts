@@ -19,7 +19,6 @@ class NpmToMavenPlugin : Plugin<Project> {
             doLast {
                 println("run buildPackageJsonForMaven")
                 val jsNpmToMavenDir = project.file("${project.buildDir}/jsNpmToMaven")
-                println( (jsNpmToMavenDir?.listFiles()?.first { it.extension == "js" && !it.nameWithoutExtension.endsWith("meta") }?.name))
                 val mainJs: String = (jsNpmToMavenDir?.listFiles()?.first { it.extension == "js" && !it.nameWithoutExtension.endsWith("meta") }?.name)
                         ?: "index.js"
                 val packageJsonData = mutableMapOf(
@@ -82,11 +81,6 @@ class NpmToMavenPlugin : Plugin<Project> {
         }
 
 
-
-
-
-
-
         val packJsNpmToMaven by project.tasks.registering(Zip::class) {
             println("register packJsNpmToMaven")
             this.from("${project.buildDir}/jsNpmToMaven")
@@ -96,13 +90,13 @@ class NpmToMavenPlugin : Plugin<Project> {
             this.dependsOn(buildPackageJsonForMaven)
 
         }
-       val packJsNpmToTgz by project.tasks.registering(Zip::class) {
+        val packJsNpmToTgz by project.tasks.registering(Zip::class) {
             println("register packJsNpmToMaven")
             this.from("${project.buildDir}/jsNpmToMaven")
             this.archiveFileName.set("${project.name}-npm-${project.version}.tgz")
             this.destinationDirectory.set(project.file("${project.buildDir}/libs"))
-           this.dependsOn(unpackJsNpm)
-           this.dependsOn(buildPackageJsonForMaven)
+            this.dependsOn(unpackJsNpm)
+            this.dependsOn(buildPackageJsonForMaven)
             println(project.tasks.names)
 
         }
@@ -110,27 +104,26 @@ class NpmToMavenPlugin : Plugin<Project> {
         project.apply(plugin = ("maven-publish"))
 
         val publishingExtension = project.extensions["publishing"] as org.gradle.api.publish.internal.DefaultPublishingExtension;
-         publishingExtension.publications {
-           register("npmGithub", MavenPublication::class) {
+        publishingExtension.publications {
+            register("npmGithub", MavenPublication::class) {
                 artifact(project.file("${project.buildDir}/libs/${project.name}-npm-${project.version}.jar"))
                 groupId = project.group.toString()
-                artifactId = project.name+"-npm"
+                artifactId = project.name + "-npm"
                 version = project.version.toString()
+
             }
-              register("mavenJsGithub", MavenPublication::class) {
+            register("mavenJsGithub", MavenPublication::class) {
                 artifact(project.file("${project.buildDir}/libs/${project.name}-js-${project.version}.jar"))
                 groupId = project.group.toString()
-                artifactId = project.name+"-js"
+                artifactId = project.name + "-js"
                 version = project.version.toString()
             }
-
-
 
         }
 
         project.apply(plugin = ("org.jetbrains.kotlin.multiplatform"))
-        project.tasks.get("build").dependsOn(project.tasks.get("packJsNpmToMaven"))
-        project.tasks.get("build").dependsOn(project.tasks.get("packJsNpmToTgz"))
+        project.tasks.get("build").dependsOn(packJsNpmToMaven)
+        project.tasks.get("build").dependsOn(packJsNpmToTgz)
     }
 }
 
