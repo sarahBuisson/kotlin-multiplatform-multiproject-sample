@@ -59,7 +59,7 @@ class NpmToMavenPlugin : Plugin<Project> {
                         ),
                         "jarDependencies" to mutableMapOf<String, Any?>(),
                         "mavenDependencies" to mavenDependencies,
-                        "devDependencies" to mutableMapOf<String, Any?>("install-jar-dependency" to "0.0.6"),
+                        "devDependencies" to mutableMapOf<String, Any?>("install-jar-dependency" to "0.0.7"),
                         "workspaces" to mutableListOf<Any?>(),
                         "bundledDependencies" to mutableListOf<Any?>(),
                         "main" to mainJs,
