@@ -28,6 +28,8 @@ class NpmToMavenPlugin : Plugin<Project> {
                 val dependencies = mutableMapOf<String, Any?>()
                 gradleGeneratedDependencies
                         .filter{it.key!="kotlin-source-map-loader"}//TODO : delete when this dependencie is available
+                        .filter{it.key!="kotlin-test-nodejs-runner"}//TODO : delete when this dependencie is available
+                        .filter{it.key!="kotlin-test"}//TODO : delete when this dependencie is available
                         .forEach { entry ->
 
                     val mvnDependency = project.configurations.get("jsMainImplementation").allDependencies.find { projectDep ->
