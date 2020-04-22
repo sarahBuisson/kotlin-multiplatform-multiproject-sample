@@ -26,7 +26,9 @@ class NpmToMavenPlugin : Plugin<Project> {
                 val gradleGeneratedDependencies: Map<String, String> = gradlePackageJson.get("dependencies") as Map<String, String>
                 val mavenDependencies = mutableMapOf<String, Any?>()
                 val dependencies = mutableMapOf<String, Any?>()
-                gradleGeneratedDependencies.forEach { entry ->
+                gradleGeneratedDependencies
+                        .filter{it.key!="kotlin-source-map-loader"}//TODO : delete when this dependencie is available
+                        .forEach { entry ->
 
                     val mvnDependency = project.configurations.get("jsMainImplementation").allDependencies.find { projectDep ->
                         val shortdepName = projectDep.name.replace("-npm", "").replace("-js", "")
