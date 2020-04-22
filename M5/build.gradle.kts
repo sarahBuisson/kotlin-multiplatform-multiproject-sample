@@ -12,18 +12,20 @@ kotlin {
 
 
     js() {
-        browser()
+        nodejs()
         mavenPublication {
             artifactId = project.name + "-js"
         }
+        compilations.getAt("main").kotlinOptions {
+            println(this)
+        }
     }
-    println(this.presets)
-
-
     metadata {
         mavenPublication {
             artifactId = project.name + "-common"
         }
+
+        //this.metadataJar.appendix = "common"
     }
     // For ARM, should be changed to iosArm32 or iosArm64
     // For Linux, should be changed to e.g. linuxX64
@@ -61,7 +63,7 @@ kotlin {
                 this.implementation(kotlin("stdlib-js"))
             }
         }
-        js().compilations["main"].defaultSourceSet {
+        js().compilations["test"].defaultSourceSet {
             dependencies {
                 this.implementation(kotlin("test-js"))
             }

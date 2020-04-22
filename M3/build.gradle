@@ -21,6 +21,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation kotlin('stdlib-common')
+
             }
         }
         commonTest {
@@ -43,11 +44,18 @@ kotlin {
         jsMain {
             dependencies {
                 implementation kotlin('stdlib-js')
+                implementation "org.jeasy:easy-rules-core-js:3.2.4-SNAPSHOT"
             }
         }
         jsTest {
             dependencies {
                 implementation kotlin('test-js')
+            }
+        }
+        metadataMain {
+            dependencies {
+                implementation kotlin('stdlib-common')
+                implementation "org.jeasy:easy-rules-core-common:3.2.4-SNAPSHOT"
             }
         }
     }
