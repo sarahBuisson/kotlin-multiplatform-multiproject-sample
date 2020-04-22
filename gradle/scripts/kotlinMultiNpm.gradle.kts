@@ -27,12 +27,25 @@ class NpmToMavenPlugin : Plugin<Project> {
                 val mavenDependencies = mutableMapOf<String, Any?>()
                 val dependencies = mutableMapOf<String, Any?>()
                 project.configurations.get("jsMainImplementation").allDependencies.forEach { projectDep ->
-                    val key = gradleGeneratedDependencies.keys.find { gradleGeneratedDep -> gradleGeneratedDep.endsWith(projectDep.name.replace("-npm","").replace("-js","")) }
+                    val key = gradleGeneratedDependencies.keys.find { gradleGeneratedDep ->
+                        val shortdepName = projectDep.name.replace("-npm", "").replace("-js", "")
+                        gradleGeneratedDep.endsWith(shortdepName)
+                    }
                     if (key != null)
                         mavenDependencies.put(key, "${projectDep.group}:${projectDep.name}:${projectDep.version}")
-                    else
+                    else {
                         dependencies.put(projectDep.name, "${projectDep.version}")
+                        val key2 = gradleGeneratedDependencies.keys.find { gradleGeneratedDep ->
+                            val depName = projectDep.name
+                            gradleGeneratedDep.endsWith(depName)
+                        }
+                        if (key2 != null)
+                            mavenDependencies.put(key2, "${projectDep.group}:${projectDep.name}:${projectDep.version}")
+
+
+                    }
                 }
+
 
                 val mainJs: String = (jsNpmToMavenDir?.listFiles()?.first { it.extension == "js" && !it.nameWithoutExtension.endsWith("meta") }?.name)
                         ?: "index.js"
