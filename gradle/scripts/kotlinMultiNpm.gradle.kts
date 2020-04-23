@@ -26,26 +26,23 @@ class NpmToMavenPlugin : Plugin<Project> {
                 val gradleGeneratedDependencies: Map<String, String> = gradlePackageJson.get("dependencies") as Map<String, String>
                 val mavenDependencies = mutableMapOf<String, Any?>()
                 val dependencies = mutableMapOf<String, Any?>()
+                val allDependencies = project.configurations.get("jsMainImplementation").allDependencies + project.configurations.get("commonMainImplementation").allDependencies
                 gradleGeneratedDependencies
-                        .filter{it.key!="kotlin-source-map-loader"}//TODO : delete when this dependencie is available
-                        .filter{it.key!="kotlin-test-nodejs-runner"}//TODO : delete when this dependencie is available
-                        .filter{it.key!="kotlin-test"}//TODO : delete when this dependencie is available
+                        .filter { it.key != "kotlin-source-map-loader" }//TODO : delete when this dependencie is available
+                        .filter { it.key != "kotlin-test-nodejs-runner" }//TODO : delete when this dependencie is available
+                        .filter { it.key != "kotlin-test" }//TODO : delete when this dependencie is available
                         .forEach { entry ->
+                            val mvnDependency = allDependencies.find { projectDep ->
 
-                    val mvnDependency = project.configurations.get("jsMainImplementation").allDependencies.find { projectDep ->
-                        val shortdepName = projectDep.name.replace("-npm", "").replace("-js", "")
-                        entry.key.endsWith(shortdepName)
-                    }
-                    if (mvnDependency != null) {
-                        mavenDependencies.put(entry.key, "${mvnDependency.group}:${mvnDependency.name}:${mvnDependency.version}")
-                    } else {
-                        dependencies.put(entry.key, entry.value)
-                    }
-                }
-                println("mavenDependencies")
-                println(mavenDependencies)
-                println(gradleGeneratedDependencies)
-                println( project.configurations.get("jsMainImplementation").allDependencies)
+                                val shortdepName = projectDep.name.replace("-npm", "").replace("-js", "")
+                                entry.key.endsWith(shortdepName)
+                            }
+                            if (mvnDependency != null) {
+                                mavenDependencies.put(entry.key, "${mvnDependency.group}:${mvnDependency.name}:${mvnDependency.version}")
+                            } else {
+                                dependencies.put(entry.key, entry.value)
+                            }
+                        }
 
                 val mainJs: String = (jsNpmToMavenDir?.listFiles()?.first { it.extension == "js" && !it.nameWithoutExtension.endsWith("meta") }?.name)
                         ?: "index.js"
