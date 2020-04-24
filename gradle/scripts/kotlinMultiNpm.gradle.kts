@@ -38,7 +38,7 @@ class NpmToMavenPlugin : Plugin<Project> {
                                 entry.key.endsWith(shortdepName)
                             }
                             if (mvnDependency != null) {
-                                mavenDependencies.put(entry.key, "${mvnDependency.group}:${shortdepName}-npm:${mvnDependency.version}")
+                                mavenDependencies.put(entry.key, "${mvnDependency.group}:${mvnDependency.name.replace("-npm", "").replace("-js", "")}-npm:${mvnDependency.version}")
                             } else {
                                 dependencies.put(entry.key, entry.value)
                             }
