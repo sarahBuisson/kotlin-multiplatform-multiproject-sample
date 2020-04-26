@@ -10,7 +10,7 @@ kotlin {
     }
     metadata {
         mavenPublication {
-            artifactId= project.name + "-common"
+            artifactId = project.name + "-common"
         }
     }
     // For ARM, should be changed to iosArm32 or iosArm64
@@ -44,7 +44,6 @@ kotlin {
         jsMain {
             dependencies {
                 implementation kotlin('stdlib-js')
-                implementation "org.jeasy:easy-rules-core-js:3.2.4-SNAPSHOT"
             }
         }
         jsTest {
@@ -55,7 +54,6 @@ kotlin {
         metadataMain {
             dependencies {
                 implementation kotlin('stdlib-common')
-                implementation "org.jeasy:easy-rules-core-common:3.2.4-SNAPSHOT"
             }
         }
     }

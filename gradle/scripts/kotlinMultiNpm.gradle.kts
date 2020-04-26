@@ -65,7 +65,6 @@ class NpmToMavenPlugin : Plugin<Project> {
                                 "email" to "sarah.buisson@gmail.com",
                                 "website" to "https://github.com/sarahBuisson/"
                         ),
-                        "homepage" to "https://github.com/sarahBuisson/easy-rules",
                         "license" to "ISC"
                 )
 
