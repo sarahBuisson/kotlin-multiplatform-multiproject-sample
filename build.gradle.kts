@@ -15,7 +15,9 @@ allprojects {
     this.group = rootGroup
     this.version = rootVersion
     repositories {
-        maven(url ="https://packagecloud.io/sarahBuisson/sarahbuisson/maven2")
+        maven(url ="https://packagecloud.io/sarahBuisson/snapshot/maven2")   .metadataSources {
+            artifact() //Look directly for artifact, avoid casse issue in snapshot version name
+        }
         google()
         jcenter()
         mavenLocal()
