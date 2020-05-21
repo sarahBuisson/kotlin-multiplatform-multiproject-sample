@@ -5,14 +5,14 @@ kotlin {
     jvm("jvm") {
 
         mavenPublication {
-            artifactId =project.name +"-jvm"
+            artifactId = project.name + "-jvm"
         }
     }
 
 
 
     js() {
-        nodejs()
+        browser()
         mavenPublication {
             artifactId = project.name + "-js"
         }
@@ -44,11 +44,14 @@ kotlin {
                 this.implementation(kotlin("test-annotations-common"))
             }
         }
-        jvm().compilations["main"].kotlinOptions { jvmTarget = "1.8"}
+        jvm().compilations["main"].kotlinOptions { jvmTarget = "1.8" }
         jvm().compilations["main"].defaultSourceSet {
 
             dependencies {
-                this.implementation(kotlin("stdlib-jdk8"))
+                implementation("io.github.microutils:kotlin-logging-common:1.7.9")
+                implementation(kotlin("stdlib-jdk8"))
+
+                implementation("org.jeasy:easy-rules-api-npm:3.2.4-SNAPSHOT")
             }
         }
         jvm().compilations["test"].defaultSourceSet {
@@ -57,10 +60,12 @@ kotlin {
                 this.implementation(kotlin("test-junit"))
             }
         }
-        js().compilations["main"].kotlinOptions { moduleKind = "umd"}
+        js().compilations["main"].kotlinOptions { moduleKind = "umd" }
         js().compilations["main"].defaultSourceSet {
             dependencies {
-                this.implementation(kotlin("stdlib-js"))
+                implementation(kotlin("stdlib-js"))
+                implementation("io.github.microutils:kotlin-logging-js:1.7.9")
+                implementation("org.jeasy:easy-rules-api-npm:3.2.4-SNAPSHOT")
             }
         }
         js().compilations["test"].defaultSourceSet {
