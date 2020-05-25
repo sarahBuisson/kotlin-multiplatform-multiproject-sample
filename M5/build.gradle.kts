@@ -1,5 +1,6 @@
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
+    id("net.akehurst.kotlin.kt2ts") apply(true)
 }
 kotlin {
     jvm("jvm") {
@@ -74,4 +75,11 @@ kotlin {
             }
         }
     }
+}
+kt2ts {
+    val d=declarationsFile
+    this.declarationsFile.set(file("eee"))
+    classPatterns.set(listOf(
+            "sample5.*"
+    ))
 }

@@ -8,4 +8,4 @@ expect object Platform {
     val name: String
 }
 
-fun hello(): String = "Hello from ${Platform.name}"
+public fun hello5(): String = "Hello from ${Platform.name}"

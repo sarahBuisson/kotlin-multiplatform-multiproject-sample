@@ -9,6 +9,7 @@ plugins {
     kotlin("multiplatform") version "1.3.72"
     id("maven-publish")
     jacoco
+    id("net.akehurst.kotlin.kt2ts") version("1.5.0") apply(false)
 
 }
 allprojects {
@@ -21,6 +22,7 @@ allprojects {
         google()
         jcenter()
         mavenLocal()
+        gradlePluginPortal()
     }
 
 }

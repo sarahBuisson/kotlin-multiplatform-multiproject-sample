@@ -1,3 +1,4 @@
+import kotlin.reflect.full.functions
 
 class NpmToMavenPlugin : Plugin<Project> {
 
@@ -6,7 +7,6 @@ class NpmToMavenPlugin : Plugin<Project> {
     }
 
     override fun apply(project: Project) {
-
         val unpackJsNpm by project.tasks.registering(Copy::class) {
             println("register unpackJsNpm in ${project.name}")
             val jarJsPath = "${project.buildDir}/libs/${project.name}-js-${project.version}.jar"
@@ -88,7 +88,9 @@ class NpmToMavenPlugin : Plugin<Project> {
                         ),
                         "license" to "ISC"
                 )
-
+                if (willBeTypescript()) {
+                    packageJsonData.set("types", "index.d.ts")
+                }
                 //download all the maven js dependencies and put them into an embedded directory.
                 //TO DO : we probably don"t need to do so now we have mavenDependancy plugin
 
@@ -107,6 +109,26 @@ class NpmToMavenPlugin : Plugin<Project> {
                 packageJson.writeText(groovy.json.JsonBuilder(packageJsonData).toPrettyString())
             }
             this.dependsOn(unpackJsNpm)
+            if (project.tasks.findByName("generateTypescriptDefinitionFile")!=null) {
+              //  this.dependsOn("generateTypescriptDefinitionFile")
+                println(project::class.java)
+                println(project.extensions::class.java)
+                  project.apply(plugin="net.akehurst.kotlin.kt2ts")
+                val extensionKt2ts = project.extensions["kt2ts"]
+                println(extensionKt2ts::class.members)
+                println("extensionKt2ts::class.members")
+                println(extensionKt2ts::class.members.map { it.name })
+                println(extensionKt2ts::class.java.declaredFields.map { it.name })
+                println(extensionKt2ts::class.java.fields.map { it.name })
+                val pr:RegularFileProperty = extensionKt2ts::class.members
+                        .find { it.name=="declarationsFile" }!!
+                        .call(extensionKt2ts) as RegularFileProperty
+                println(pr.get())
+                println(pr.get()::class)
+                val typescriptDef:File = project.file("${project.buildDir}/jsNpmToMaven/index.d.ts")
+                typescriptDef.createNewFile()
+                pr.set(typescriptDef)
+            }
         }
 
 
@@ -129,6 +151,7 @@ class NpmToMavenPlugin : Plugin<Project> {
             println(project.tasks.names)
 
         }
+
 
         project.apply(plugin = ("maven-publish"))
 
@@ -154,6 +177,13 @@ class NpmToMavenPlugin : Plugin<Project> {
         project.tasks.get("build").dependsOn(packJsNpmToMaven)
         project.tasks.get("build").dependsOn(packJsNpmToTgz)
     }
+
+    private fun willBeTypescript():Boolean {
+
+      //  val property: Any? = (project as org.gradle.api.internal.project.DefaultProject).findProperty("kt2ts")
+       // println(property)
+        return true// project.hasProperty("kt2ts");
+         }
 }
 
 apply<NpmToMavenPlugin>()
