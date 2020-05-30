@@ -1,11 +1,12 @@
 apply plugin: 'org.jetbrains.kotlin.multiplatform'
 
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 kotlin {
     jvm()
     js {
         browser {
-        }
-        nodejs {
         }
     }
     metadata {
@@ -36,6 +37,7 @@ kotlin {
             }
         }
         jvmTest {
+
             dependencies {
                 implementation kotlin('test')
                 implementation kotlin('test-junit')
@@ -56,5 +58,18 @@ kotlin {
                 implementation kotlin('stdlib-common')
             }
         }
+    }
+}
+
+tasks.jvmTest{
+    println("this.class")
+    println(this.class)
+    println(testLogging)
+    testLogging {
+        println("this.class")
+        println(this.class)
+        exceptionFormat = TestExceptionFormat.FULL
+        events = [TestLogEvent.FAILED, TestLogEvent.PASSED, TestLogEvent.SKIPPED]
+
     }
 }

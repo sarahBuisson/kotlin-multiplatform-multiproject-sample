@@ -52,12 +52,18 @@ class NpmToMavenPlugin : Plugin<Project> {
                                     if (mvnJsDependency is org.gradle.api.internal.artifacts.dependencies.DefaultProjectDependency) {
 
                                         mavenDependencies.put(entry.key, "${mvnJsDependency.group}:${mvnJsDependency.name}-npm:${mvnJsDependency.version}")
-
+                                        if (willBeTypescript()) {
+                                            mavenDependencies.put("${mvnJsDependency.group}-${mvnJsDependency.name}", "${mvnJsDependency.group}:${mvnJsDependency.name}-npm:${mvnJsDependency.version}")
+                                        }
                                     } else {
                                         mavenDependencies.put(entry.key, "${mvnJsDependency.group}:${mvnJsDependency.name}:${mvnJsDependency.version}")
+                                        if (willBeTypescript()) {
+                                            mavenDependencies.put("${mvnJsDependency.group}-${mvnJsDependency.name}", "${mvnJsDependency.group}-${mvnJsDependency.name}:${mvnJsDependency.version}")
+                                        }
                                     }
                                 } else {
                                     dependencies.put(entry.key, entry.value)
+
                                 }
                             }
                 }
