@@ -115,22 +115,14 @@ class NpmToMavenPlugin : Plugin<Project> {
                 packageJson.writeText(groovy.json.JsonBuilder(packageJsonData).toPrettyString())
             }
             this.dependsOn(unpackJsNpm)
-            if (project.tasks.findByName("generateTypescriptDefinitionFile")!=null) {
-              //  this.dependsOn("generateTypescriptDefinitionFile")
-                println(project::class.java)
-                println(project.extensions::class.java)
-                  project.apply(plugin="net.akehurst.kotlin.kt2ts")
+            if (project.tasks.findByName("generateTypescriptDefinitionFile") != null) {
+                //  this.dependsOn("generateTypescriptDefinitionFile")
+
+                project.apply(plugin = "net.akehurst.kotlin.kt2ts")
                 val extensionKt2ts = project.extensions["kt2ts"]
-                println(extensionKt2ts::class.members)
-                println("extensionKt2ts::class.members")
-                println(extensionKt2ts::class.members.map { it.name })
-                println(extensionKt2ts::class.java.declaredFields.map { it.name })
-                println(extensionKt2ts::class.java.fields.map { it.name })
-                val pr:RegularFileProperty = extensionKt2ts::class.members
+                val pr: RegularFileProperty = extensionKt2ts::class.members
                         .find { it.name=="declarationsFile" }!!
                         .call(extensionKt2ts) as RegularFileProperty
-                println(pr.get())
-                println(pr.get()::class)
                 val typescriptDef:File = project.file("${project.buildDir}/jsNpmToMaven/index.d.ts")
                 typescriptDef.createNewFile()
                 pr.set(typescriptDef)
