@@ -2,7 +2,7 @@ import groovy.json.JsonBuilder
 import org.gradle.api.publish.maven.MavenPublication
 
 
-val rootGroup = "com.example.mkotlinVersiony.library"
+val rootGroup = "com.example.my.library"
 val rootVersion = "0.0.5-SNAPSHOT"
 
 plugins {

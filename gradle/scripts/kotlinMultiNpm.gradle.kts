@@ -53,12 +53,12 @@ class NpmToMavenPlugin : Plugin<Project> {
 
                                         mavenDependencies.put(entry.key, "${mvnJsDependency.group}:${mvnJsDependency.name}-npm:${mvnJsDependency.version}")
                                         if (willBeTypescript()) {
-                                            mavenDependencies.put("${mvnJsDependency.group}-${mvnJsDependency.name}", "${mvnJsDependency.group}:${mvnJsDependency.name}-npm:${mvnJsDependency.version}")
+                                            mavenDependencies.put("${mvnJsDependency.group}-${mvnJsDependency.name.replace("-npm","")}", "${mvnJsDependency.group}:${mvnJsDependency.name}-npm:${mvnJsDependency.version}")
                                         }
                                     } else {
                                         mavenDependencies.put(entry.key, "${mvnJsDependency.group}:${mvnJsDependency.name}:${mvnJsDependency.version}")
                                         if (willBeTypescript()) {
-                                            mavenDependencies.put("${mvnJsDependency.group}-${mvnJsDependency.name}", "${mvnJsDependency.group}-${mvnJsDependency.name}:${mvnJsDependency.version}")
+                                            mavenDependencies.put("${mvnJsDependency.group}-${mvnJsDependency.name.replace("-npm","")}", "${mvnJsDependency.group}:${mvnJsDependency.name}:${mvnJsDependency.version}")
                                         }
                                     }
                                 } else {
