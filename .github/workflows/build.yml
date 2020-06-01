@@ -11,7 +11,7 @@ jobs:
         with:
           java-version: 8
       - name: Build
-        run: gradle build packJsNpmToMaven --stacktrace
+        run: gradle build packJsNpmToMaven -x jsPackageJson --stacktrace
       - name: Build reportDir
         env:
           buildReportsDir: "buildReports"
