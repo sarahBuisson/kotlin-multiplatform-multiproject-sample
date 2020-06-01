@@ -132,11 +132,7 @@ class NpmToMavenPlugin : Plugin<Project> {
             }
             println(project.tasks)
             if (project.tasks.findByName("generateTypescriptDefinitionFile") != null) {
-                println("add task dep")
-
-                (project.tasks.findByName("generateTypescriptDefinitionFile")as Task)!!.dependsOn(this)
-
-
+                (project.tasks.findByName("buildPackageJsonForMaven")!! as Task).dependsOn(project.tasks.findByName("generateTypescriptDefinitionFile"))
             }
             this.dependsOn(unpackJsNpm)
 
