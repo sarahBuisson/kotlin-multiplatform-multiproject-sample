@@ -70,6 +70,7 @@ kotlin {
     }
 }
 kt2ts {
+    declarationsFile.set(file("${project.buildDir}/jsNpmToMaven/index.d.ts"))
     classPatterns.set(listOf(
             "sample5.*"
     ))
