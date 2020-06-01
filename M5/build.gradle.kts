@@ -10,22 +10,15 @@ kotlin {
         }
     }
 
-
-
-    js() {
-        browser()
+    js("js") {
         mavenPublication {
             artifactId = project.name + "-js"
-        }
-        compilations.getAt("main").kotlinOptions {
-            println(this)
         }
     }
     metadata {
         mavenPublication {
             artifactId = project.name + "-common"
         }
-
         //this.metadataJar.appendix = "common"
     }
     // For ARM, should be changed to iosArm32 or iosArm64
@@ -45,16 +38,16 @@ kotlin {
                 this.implementation(kotlin("test-annotations-common"))
             }
         }
-        jvm().compilations["main"].kotlinOptions { jvmTarget = "1.8" }
-        jvm().compilations["main"].defaultSourceSet {
-
+        val jvmCompilation = jvm().compilations["main"]
+        jvmCompilation.kotlinOptions { jvmTarget = "1.8" }
+        jvmCompilation.defaultSourceSet {
             dependencies {
                 implementation("io.github.microutils:kotlin-logging-common:1.7.9")
                 implementation(kotlin("stdlib-jdk8"))
-
-                implementation("org.jeasy:easy-rules-api-npm:3.2.4-SNAPSHOT")
+                implementation("org.jeasy:easy-rules-api-jvm:3.2.4-SNAPSHOT")
             }
         }
+
         jvm().compilations["test"].defaultSourceSet {
             dependencies {
                 this.implementation(kotlin("test"))
@@ -77,8 +70,6 @@ kotlin {
     }
 }
 kt2ts {
-    val d=declarationsFile
-    this.declarationsFile.set(file("eee"))
     classPatterns.set(listOf(
             "sample5.*"
     ))
