@@ -94,9 +94,7 @@ class NpmToMavenPlugin : Plugin<Project> {
                         ),
                         "license" to "ISC"
                 )
-                if (willBeTypescript()) {
-                    packageJsonData.set("types", "index.d.ts")
-                }
+
                 //download all the maven js dependencies and put them into an embedded directory.
                 //TO DO : we probably don"t need to do so now we have mavenDependancy plugin
 
@@ -106,7 +104,10 @@ class NpmToMavenPlugin : Plugin<Project> {
                     throw Exception("need   \"apply plugin: 'org.jetbrains.kotlin.multiplatform'\"")
                 }
                 (packageJsonData.get("dependencies") as MutableMap<String, Any>).put("kotlin", kotlinVersionPlugin)
-
+                if (willBeTypescript()) {
+                    packageJsonData.set("types", "index.d.ts")
+                    (packageJsonData.get("mavenDependencies") as MutableMap<String, Any>).put("unknown-kotlin", "org.jetbrains.kotlin:kotlin-stdlib-js:"+kotlinVersionPlugin)
+                }
                 project.plugins
                 val packageJson = project.file("${project.buildDir}/jsNpmToMaven/package.json")
                 if (!packageJson.getParentFile().exists())
@@ -125,6 +126,7 @@ class NpmToMavenPlugin : Plugin<Project> {
                         .call(extensionKt2ts) as RegularFileProperty
                 val typescriptDef:File = project.file("${project.buildDir}/jsNpmToMaven/index.d.ts")
                 typescriptDef.createNewFile()
+                typescriptDef.writeText("//File to fill by plugin kt2s")
                 pr.set(typescriptDef)
             }
         }
