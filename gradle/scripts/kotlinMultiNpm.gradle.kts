@@ -79,7 +79,7 @@ class NpmToMavenPlugin : Plugin<Project> {
                         ),
                         "jarDependencies" to mutableMapOf<String, Any?>(),
                         "mavenDependencies" to mavenDependencies,
-                        "devDependencies" to mutableMapOf<String, Any?>("install-jar-dependency" to "0.0.11"),
+                        "devDependencies" to mutableMapOf<String, Any?>("install-jar-dependency" to "0.0.13"),
                         "installJarConfig" to mutableMapOf<String, Any?>("additionalMavenRepositories" to listOf<String>(
                                 "https://packagecloud.io/sarahBuisson/snapshot/maven2/",
                                 "https://packagecloud.io/sarahBuisson/sarahbuisson/maven2/")
